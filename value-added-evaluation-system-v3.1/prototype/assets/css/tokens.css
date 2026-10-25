@@ -1,0 +1,75 @@
+/* v3.2 设计变量：与首页 index.html 同一套浅色、克制的视觉 token */
+:root {
+  /* ---- 品牌色 ---- */
+  --primary: #0a66ff;
+  --primary-hover: #084fd0;
+  --primary-deep: #084fd0;
+  --primary-light: #f2f7ff;
+  --primary-glow: rgba(10, 102, 255, 0.10);
+  --blue: #0a66ff;
+  --cyan: #38bdf8;
+  --violet: #6d28d9;
+  --navy: #0f172a;
+  --navy-2: #1e293b;
+  --navy-3: #334155;
+
+  /* ---- 文字 ---- */
+  --ink: #0f172a;
+  --ink-2: #1e293b;
+  --text: #0f172a;
+  --text-1: #0f172a;
+  --text-2: #334155;
+  --body: #334155;
+  --text-3: #7b8798;
+  --muted: #64748b;
+  --faint: #7b8798;
+
+  /* ---- 表面 ---- */
+  --bg: #f7f9fc;
+  --surface: #ffffff;
+  --surface-2: #f8fafc;
+  --surface-3: #f1f5f9;
+  --surface-glass: rgba(255, 255, 255, 0.94);
+  --border: #e5e7eb;
+  --line: #e5e7eb;
+  --line-2: #eef2f7;
+  --border-strong: #d1d5db;
+
+  /* ---- 语义色 ---- */
+  --success: #047857;
+  --success-bg: #ecfdf5;
+  --warning: #b45309;
+  --warning-bg: #fffbeb;
+  --danger: #b91c1c;
+  --danger-bg: #fef2f2;
+  --info: #0a66ff;
+  --info-bg: #f2f7ff;
+  --purple: #6d28d9;
+
+  /* ---- 阴影（克制，只保留必要层级） ---- */
+  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.03);
+  --shadow-1: 0 1px 2px rgba(16, 24, 40, 0.03);
+  --shadow-2: 0 8px 24px rgba(16, 24, 40, 0.05);
+  --shadow-md: 0 8px 24px rgba(16, 24, 40, 0.05);
+  --shadow-3: 0 24px 48px rgba(15, 23, 42, 0.12);
+  --shadow-lg: 0 24px 48px rgba(15, 23, 42, 0.12);
+
+  /* ---- 圆角 ---- */
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-xl: 14px;
+  --radius-2xl: 16px;
+  --radius-pill: 999px;
+
+  /* ---- 字体 ---- */
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  --mono: "SFMono-Regular", "Cascadia Code", "JetBrains Mono", Consolas, "Liberation Mono", monospace;
+  --font-size: 14px;
+
+  /* ---- 布局 ---- */
+  --header-h: 64px;
+  --sidebar-w: 236px;
+  --content-max: 1480px;
+}

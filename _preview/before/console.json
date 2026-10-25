@@ -1,0 +1,64 @@
+{
+  "width": 1440,
+  "errors": [
+    "LOG Failed to load resource: the server responded with a status of 404 (File not found)"
+  ],
+  "results": [
+    {
+      "name": "login",
+      "title": "|14"
+    },
+    {
+      "name": "schools",
+      "title": "学校管理|1"
+    },
+    {
+      "name": "basic",
+      "title": "基础数据|4"
+    },
+    {
+      "name": "basic-school",
+      "title": "基础数据|4"
+    },
+    {
+      "name": "exams",
+      "title": "考试管理|1"
+    },
+    {
+      "name": "exam-detail",
+      "title": "2024级高三联考（评价）|2"
+    },
+    {
+      "name": "evaluations",
+      "title": "评价任务|1"
+    },
+    {
+      "name": "results",
+      "title": "高中园四校增值评价（高二期末 → 高三）|2"
+    },
+    {
+      "name": "process",
+      "title": "高中园四校增值评价（高二期末 → 高三） · 计算过程|4"
+    },
+    {
+      "name": "reports",
+      "title": "选择报告视角|1"
+    },
+    {
+      "name": "report-principal",
+      "title": "博雅高中增值报告|0"
+    },
+    {
+      "name": "settings",
+      "title": "参数配置|4"
+    },
+    {
+      "name": "algorithm-page",
+      "title": "增值评价算法说明|5"
+    },
+    {
+      "name": "algorithm-public",
+      "title": "|0"
+    }
+  ]
+}

@@ -1,0 +1,1542 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>成绩增值评价系统 · 看见每一所学校的真实增值</title>
+<meta name="description" content="面向区域联考、教育集团与单校的增值评价系统：不比一次分数，比两个时间点的位置变化。四层结果、全链路可追溯、学校数量与学段均可配置。" />
+<meta name="theme-color" content="#071021" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="成绩增值评价系统 · 看见每一所学校的真实增值" />
+<meta property="og:description" content="不比一次分数，比两个时间点的位置变化。四层结果、全链路可追溯，适用于区域联考、教育集团与单校。" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%232f7cff'/%3E%3Cstop offset='1' stop-color='%237c3aed'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Ctext x='32' y='42' font-family='Arial,Helvetica,sans-serif' font-size='24' font-weight='700' fill='white' text-anchor='middle'%3EVE%3C/text%3E%3C/svg%3E" />
+<style>
+/* ============ Design tokens ============ */
+:root{
+  --primary:#0a66ff;
+  --primary-deep:#084fd0;
+  --blue:#3b82f6;
+  --cyan:#38bdf8;
+  --violet:#8b5cf6;
+  --ink:#0f172a;
+  --ink-2:#1e293b;
+  --body:#475569;
+  --muted:#64748b;
+  --faint:#94a3b8;
+  --line:#e2e8f0;
+  --line-2:#eef2f7;
+  --bg:#f6f8fc;
+  --surface:#ffffff;
+  --navy:#071021;
+  --navy-2:#0b1a33;
+  --navy-3:#102a52;
+  --green:#059669;
+  --green-soft:#10b981;
+  --red:#dc2626;
+  --amber:#d97706;
+  --shadow-sm:0 1px 2px rgba(15,23,42,.04);
+  --shadow-md:0 12px 32px rgba(15,23,42,.07);
+  --shadow-lg:0 24px 60px rgba(15,23,42,.12);
+  --radius-sm:10px;
+  --radius:16px;
+  --radius-lg:22px;
+  --radius-xl:28px;
+  --font:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",sans-serif;
+  --mono:"SFMono-Regular","Cascadia Code","JetBrains Mono",Consolas,"Liberation Mono",monospace;
+  --nav-h:74px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;overflow-x:hidden}
+body{margin:0;font-family:var(--font);background:var(--bg);color:var(--ink);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img,svg{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+ul,ol{margin:0;padding:0;list-style:none}
+h1,h2,h3,h4,p{margin:0}
+strong{font-weight:700}
+::selection{background:rgba(10,102,255,.18)}
+:focus-visible{outline:2px solid var(--primary);outline-offset:3px;border-radius:4px}
+[hidden]{display:none!important}
+.icon{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.icon-sm{width:16px;height:16px}
+.icon-lg{width:24px;height:24px}
+.skip{position:fixed;left:16px;top:-64px;z-index:120;background:#fff;color:var(--primary);padding:10px 16px;border-radius:8px;box-shadow:var(--shadow-md);transition:top .2s}
+.skip:focus{top:12px}
+.progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:110;background:linear-gradient(90deg,#38bdf8,#0a66ff 45%,#8b5cf6);transform:scaleX(0);transform-origin:0 50%;will-change:transform}
+.container{width:min(1200px,calc(100% - 48px));margin-inline:auto}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* ============ Nav ============ */
+.nav{position:fixed;top:0;left:0;right:0;z-index:60;transition:background .3s,box-shadow .3s,border-color .3s}
+.nav-inner{height:var(--nav-h);display:flex;align-items:center;justify-content:space-between;gap:24px}
+.brand{display:flex;align-items:center;gap:12px;min-width:0}
+.brand-mark{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-weight:800;font-size:13px;letter-spacing:.04em;color:#fff;background:linear-gradient(145deg,#2f7cff,#7c3aed);box-shadow:0 8px 20px rgba(37,99,235,.3);flex:none}
+.brand-text strong{display:block;font-size:15px;font-weight:700;letter-spacing:.01em;color:#fff;transition:color .3s;white-space:nowrap}
+.brand-text small{display:block;font-size:9px;letter-spacing:.16em;color:rgba(255,255,255,.45);margin-top:1px;transition:color .3s;white-space:nowrap}
+.nav-links{display:flex;align-items:center;gap:24px}
+.nav-link{font-size:13.5px;color:rgba(226,240,255,.68);position:relative;padding:7px 0;transition:color .2s;white-space:nowrap}
+.nav-link::after{content:"";position:absolute;left:0;right:0;bottom:1px;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--cyan),var(--violet));transform:scaleX(0);transition:transform .25s}
+.nav-link:hover,.nav-link.active{color:#fff}
+.nav-link.active::after{transform:scaleX(1)}
+.nav.scrolled{background:rgba(255,255,255,.9);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid rgba(226,232,240,.9);box-shadow:0 4px 20px rgba(15,23,42,.04)}
+.nav.scrolled .brand-text strong{color:var(--ink)}
+.nav.scrolled .brand-text small{color:var(--faint)}
+.nav.scrolled .nav-link{color:var(--muted)}
+.nav.scrolled .nav-link:hover,.nav.scrolled .nav-link.active{color:var(--primary)}
+.nav-toggle{display:none;width:42px;height:42px;border-radius:12px;border:1px solid rgba(255,255,255,.18);padding:11px;cursor:pointer}
+.nav-toggle span{display:block;width:18px;height:2px;border-radius:2px;background:#fff;transition:transform .25s,opacity .25s,background .25s}
+.nav-toggle span+span{margin-top:5px}
+.nav-toggle.is-open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle.is-open span:nth-child(2){opacity:0}
+.nav-toggle.is-open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.nav.scrolled .nav-toggle{border-color:var(--line);background:#fff}
+.nav.scrolled .nav-toggle span{background:var(--ink)}
+.mobile-menu{position:fixed;inset:0;z-index:55;background:radial-gradient(900px 500px at 82% 0%,rgba(59,130,246,.24),transparent 60%),radial-gradient(700px 500px at 10% 100%,rgba(139,92,246,.16),transparent 60%),#071021;padding:104px 24px 32px;display:flex;flex-direction:column;opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s;overflow-y:auto}
+.mobile-menu.open{opacity:1;visibility:visible}
+.mobile-menu a{padding:15px 0;font-size:21px;font-weight:600;color:#e2e8f0;border-bottom:1px solid rgba(255,255,255,.08)}
+.mobile-menu a:hover{color:#fff}
+.mobile-menu .m-note{margin-top:18px;font-size:12px;color:rgba(190,214,255,.45);text-align:center}
+body.menu-open{overflow:hidden}
+body.menu-open .nav{background:transparent;border-color:transparent;box-shadow:none}
+body.menu-open .brand-text strong{color:#fff}
+body.menu-open .brand-text small{color:rgba(255,255,255,.45)}
+body.menu-open .nav-toggle{border-color:rgba(255,255,255,.18);background:transparent}
+body.menu-open .nav-toggle span{background:#fff}
+
+/* ============ Shared ============ */
+.section{padding:clamp(72px,8.5vw,120px) 0;scroll-margin-top:calc(var(--nav-h) + 18px)}
+.section--white{background:var(--surface)}
+.section--dark{background:radial-gradient(1100px 600px at 80% 0%,rgba(59,130,246,.2),transparent 60%),radial-gradient(800px 600px at 5% 100%,rgba(139,92,246,.14),transparent 60%),var(--navy);color:#e2e8f0}
+.eyebrow{display:flex;align-items:center;gap:10px;font-size:11.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--primary);margin-bottom:16px}
+.eyebrow::before{content:"";width:26px;height:1px;background:linear-gradient(90deg,var(--primary),transparent)}
+.section--dark .eyebrow{color:#7dd3fc}
+.section--dark .eyebrow::before{background:linear-gradient(90deg,#7dd3fc,transparent)}
+h2{font-size:clamp(28px,3.5vw,42px);line-height:1.2;letter-spacing:-.025em;font-weight:750;color:var(--ink)}
+.section--dark h2{color:#f8fbff}
+.lead{margin-top:18px;max-width:760px;font-size:16.5px;line-height:1.9;color:var(--muted)}
+.section--dark .lead{color:rgba(214,230,255,.62)}
+.section-head{max-width:860px;margin-bottom:clamp(36px,5vw,54px)}
+.section-head--center{margin-inline:auto;text-align:center}
+.section-head--center .eyebrow{justify-content:center}
+.section-head--center .eyebrow::before{display:none}
+.section-head--center .lead{margin-inline:auto}
+.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.grid-4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:30px;transition:transform .25s,box-shadow .25s,border-color .25s}
+.card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md);border-color:#cbd5e1}
+.icon-tile{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(140deg,#eef4ff,#f4efff);color:var(--primary);border:1px solid #e0e9ff}
+.icon-tile .icon{width:22px;height:22px}
+.icon-tile--green{background:#ecfdf5;border-color:#d1fae5;color:var(--green)}
+.icon-tile--amber{background:#fffbeb;border-color:#fde68a;color:var(--amber)}
+.icon-tile--violet{background:#f5f3ff;border-color:#ede9fe;color:#7c3aed}
+.icon-tile--slate{background:#f1f5f9;border-color:#e2e8f0;color:#475569}
+.tag{display:inline-flex;align-items:center;font-size:12px;line-height:1;padding:6px 10px;border-radius:999px;background:#f1f5f9;color:var(--muted);border:1px solid #e9eef5}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:14px 24px;border-radius:999px;font-size:15px;font-weight:600;transition:transform .2s,box-shadow .2s,background .2s;white-space:nowrap}
+.btn .icon{width:17px;height:17px}
+.btn-primary{background:linear-gradient(135deg,#2f7cff,#0a66ff);color:#fff;box-shadow:0 12px 28px rgba(10,102,255,.28)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 16px 34px rgba(10,102,255,.34)}
+.btn-ghost{color:#e2e8f0;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.04)}
+.btn-ghost:hover{background:rgba(255,255,255,.08);transform:translateY(-2px)}
+.btn-outline{color:var(--primary);border:1px solid #c7d9ff;background:#fff}
+.btn-outline:hover{background:#f2f7ff;transform:translateY(-2px)}
+.btn-white{background:#fff;color:var(--primary);box-shadow:0 12px 30px rgba(3,10,30,.18)}
+.btn-white:hover{transform:translateY(-2px)}
+
+/* ============ Hero ============ */
+.hero{position:relative;padding:calc(var(--nav-h) + 74px) 0 100px;color:#eaf2ff;background:radial-gradient(1200px 620px at 78% -12%,rgba(59,130,246,.34),transparent 62%),radial-gradient(900px 520px at 8% 18%,rgba(139,92,246,.2),transparent 62%),linear-gradient(165deg,#071021 0%,#0a1730 55%,#081226 100%);overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(148,197,255,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(148,197,255,.055) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(circle at 50% 30%,#000 20%,transparent 78%);-webkit-mask-image:radial-gradient(circle at 50% 30%,#000 20%,transparent 78%);pointer-events:none}
+.hero::after{content:"";position:absolute;width:620px;height:620px;right:-180px;top:-220px;border-radius:50%;background:radial-gradient(circle,rgba(56,189,248,.16),transparent 65%);filter:blur(20px);pointer-events:none}
+.hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:1.02fr .98fr;gap:56px;align-items:center}
+.hero-kicker{display:inline-flex;align-items:center;gap:10px;padding:7px 14px;border-radius:999px;border:1px solid rgba(125,211,252,.22);background:rgba(56,189,248,.07);font-size:11.5px;letter-spacing:.14em;color:#93c5fd;text-transform:uppercase;margin-bottom:22px}
+.hero-kicker .pulse{width:6px;height:6px;border-radius:50%;background:#38bdf8;box-shadow:0 0 0 0 rgba(56,189,248,.5);animation:pulse 2.4s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(56,189,248,.45)}70%{box-shadow:0 0 0 8px rgba(56,189,248,0)}100%{box-shadow:0 0 0 0 rgba(56,189,248,0)}}
+.hero h1{font-size:clamp(38px,5.1vw,64px);line-height:1.12;letter-spacing:-.035em;font-weight:800;color:#fff}
+.hero h1 .grad{background:linear-gradient(100deg,#7dd3fc 0%,#93a7ff 48%,#c4b5fd 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .lede{margin-top:22px;max-width:570px;font-size:17px;line-height:1.9;color:rgba(214,230,255,.72)}
+.hero-actions{margin-top:22px;display:flex;gap:14px;flex-wrap:wrap}
+.home-login{margin-top:26px;max-width:620px;padding:16px 16px 13px;border:1px solid rgba(125,211,252,.18);border-radius:16px;background:linear-gradient(160deg,rgba(12,30,58,.84),rgba(7,18,36,.7));box-shadow:0 18px 44px rgba(0,0,0,.22);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.home-login-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.home-login-head b{font-size:13px;font-weight:650;letter-spacing:.01em;color:#eaf3ff}
+.home-login-head span{font-size:10px;letter-spacing:.06em;color:rgba(147,197,253,.58);white-space:nowrap}
+.home-login-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;gap:8px;margin-top:11px}
+.home-input{height:42px;min-width:0;border:1px solid rgba(255,255,255,.14);border-radius:9px;background:rgba(255,255,255,.055);padding:0 12px;color:#f1f7ff;font-size:13px;font-family:var(--font);transition:border-color .2s,box-shadow .2s,background .2s}
+.home-input::placeholder{color:rgba(190,214,255,.4)}
+.home-input:hover{border-color:rgba(125,211,252,.32)}
+.home-input:focus{outline:none;border-color:#38bdf8;background:rgba(255,255,255,.075);box-shadow:0 0 0 3px rgba(56,189,248,.13)}
+.home-login-btn{height:42px;padding:0 20px;border-radius:9px;background:linear-gradient(135deg,#2f7cff,#0a66ff);color:#fff;font-size:13px;font-weight:650;white-space:nowrap;box-shadow:0 8px 20px rgba(10,102,255,.25);transition:transform .2s,box-shadow .2s,opacity .2s}
+.home-login-btn:hover{transform:translateY(-1px);box-shadow:0 10px 24px rgba(10,102,255,.32)}
+.home-login-btn:disabled{opacity:.7;cursor:default;transform:none}
+.home-login-error{margin-top:9px;padding:8px 10px;border-radius:7px;background:rgba(239,68,68,.12);border:1px solid rgba(248,113,113,.3);color:#fecaca;font-size:11.5px;line-height:1.6}
+.home-login-hint{margin-top:9px;font-size:10.5px;line-height:1.6;color:rgba(190,214,255,.42)}
+.hero-meta{margin-top:22px;display:flex;align-items:flex-start;gap:8px;font-size:12.5px;line-height:1.7;color:rgba(190,214,255,.48)}
+.hero-meta .icon{width:15px;height:15px;margin-top:2px;color:rgba(147,197,253,.6)}
+.hero-visual{position:relative;z-index:1}
+.hero-visual::before{content:"";position:absolute;inset:-10% -8%;background:radial-gradient(circle at 60% 40%,rgba(56,189,248,.16),transparent 62%);filter:blur(18px);pointer-events:none}
+.chain-card{position:relative;border-radius:24px;border:1px solid rgba(255,255,255,.13);background:linear-gradient(158deg,rgba(17,38,72,.94),rgba(8,20,40,.9));box-shadow:0 34px 90px rgba(0,0,0,.4);padding:22px 22px 18px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.chain-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:6px}
+.chain-head b{font-size:13px;font-weight:600;color:rgba(235,245,255,.86);letter-spacing:.02em}
+.chain-head small{font-size:9px;letter-spacing:.18em;color:rgba(125,211,252,.55)}
+.chain-svg{width:100%;height:auto;margin-top:4px}
+.chain-svg text{font-family:var(--font)}
+.chain-legend{display:flex;align-items:center;gap:14px;padding-top:12px;margin-top:2px;border-top:1px solid rgba(255,255,255,.08);font-size:10.5px;color:rgba(190,214,255,.48);flex-wrap:wrap}
+.chain-legend span{display:inline-flex;align-items:center;gap:6px}
+.chain-legend .spacer{margin-left:auto;color:rgba(147,197,253,.38);letter-spacing:.06em}
+.legend-dot{width:6px;height:6px;border-radius:50%;display:inline-block}
+.legend-dot--up{background:#34d399}
+.legend-dot--flat{background:#94a3b8}
+.legend-dot--down{background:#f87171}
+.float-badge{position:absolute;z-index:2;border-radius:14px;padding:11px 14px;font-size:11.5px;line-height:1.4;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);animation:float 7s ease-in-out infinite}
+.float-badge small{display:block;font-size:9px;letter-spacing:.12em;text-transform:uppercase;opacity:.6;margin-bottom:2px}
+.float-badge--a{top:-52px;right:-4px;background:linear-gradient(135deg,rgba(14,165,233,.95),rgba(124,58,237,.95));color:#fff;box-shadow:0 16px 36px rgba(37,99,235,.4)}
+.float-badge--a b{font-family:var(--mono);font-size:14px;letter-spacing:.02em}
+.float-badge--b{bottom:34px;left:-26px;background:rgba(8,20,40,.9);border:1px solid rgba(125,211,252,.22);color:#dbeafe;box-shadow:0 16px 36px rgba(0,0,0,.35)}
+.float-badge--b b{color:#7dd3fc;font-size:12px}
+.float-badge--b span{color:rgba(190,214,255,.6)}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.chain-exit{stroke-dasharray:760;stroke-dashoffset:760;animation:draw 1.9s .25s cubic-bezier(.3,.7,.2,1) forwards}
+.chain-entry{opacity:0;animation:fadeIn 1.1s .9s ease forwards}
+.chain-fade{opacity:0;animation:fadeIn 1.2s 1.2s ease forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes fadeIn{to{opacity:1}}
+
+/* ============ Stats strip ============ */
+.strip{position:relative;z-index:3;margin-top:-54px}
+.strip-card{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));background:#fff;border:1px solid var(--line);border-radius:22px;box-shadow:0 24px 60px rgba(15,23,42,.09);padding:26px 10px;overflow:hidden}
+.strip-item{padding:2px 26px;border-left:1px solid var(--line-2)}
+.strip-item:first-child{border-left:0}
+.strip-item b{display:block;font-size:20px;font-weight:750;letter-spacing:-.01em;color:var(--ink)}
+.strip-item b em{font-style:normal;color:var(--primary)}
+.strip-item span{display:block;margin-top:3px;font-size:12px;color:var(--muted);line-height:1.6}
+
+/* ============ Problem ============ */
+.problem-card{position:relative;overflow:hidden}
+.problem-card .num{position:absolute;top:22px;right:24px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:#c3d3ea}
+.problem-card h3{margin-top:20px;font-size:19px;line-height:1.45;font-weight:700;color:var(--ink);letter-spacing:-.01em}
+.problem-card p{margin-top:10px;color:var(--muted);font-size:14.5px;line-height:1.85}
+.statement{margin-top:40px;padding:28px 32px;border-radius:18px;background:linear-gradient(115deg,#edf4ff,#f6f1ff 70%,#fdf4ff);border:1px solid #dbe6ff;font-size:17px;line-height:1.85;color:#233046}
+.statement .mark{display:block;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--primary);margin-bottom:8px}
+.statement strong{color:var(--ink);box-shadow:inset 0 -8px 0 rgba(10,102,255,.12)}
+
+/* ============ Method ============ */
+.method-grid{display:grid;grid-template-columns:1.06fr .94fr;gap:56px;align-items:start}
+.steps{border-top:1px solid var(--line)}
+.step{display:grid;grid-template-columns:52px 1fr;gap:18px;padding:24px 0;border-bottom:1px solid var(--line)}
+.step-index{font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.06em;color:var(--primary);padding-top:4px}
+.step h3{font-size:17.5px;font-weight:700;letter-spacing:-.01em;color:var(--ink)}
+.step p{margin-top:7px;font-size:14.5px;line-height:1.8;color:var(--muted)}
+.step code,.example-card code{font-family:var(--mono);font-size:.92em;background:#eef4ff;color:#0b4dbb;padding:2px 6px;border-radius:5px;border:1px solid #dbe7ff;white-space:nowrap}
+.example-card{position:relative;background:linear-gradient(158deg,#0b1a33,#102a52);border:1px solid rgba(125,211,252,.14);border-radius:22px;padding:28px;color:#e2e8f0;box-shadow:0 30px 70px rgba(7,16,33,.28);overflow:hidden}
+.example-card::before{content:"";position:absolute;width:320px;height:320px;right:-120px;top:-140px;border-radius:50%;background:radial-gradient(circle,rgba(56,189,248,.18),transparent 65%);pointer-events:none}
+.example-card .ex-top{display:flex;align-items:center;justify-content:space-between;gap:12px;position:relative;z-index:1}
+.example-card .ex-badge{font-size:9.5px;letter-spacing:.1em;color:rgba(147,197,253,.7);border:1px solid rgba(125,211,252,.2);background:rgba(56,189,248,.06);padding:5px 9px;border-radius:999px;white-space:nowrap}
+.example-card h3{margin-top:16px;font-size:20px;line-height:1.5;font-weight:700;color:#fff;position:relative;z-index:1}
+.example-card .ex-sub{margin-top:8px;font-size:12px;line-height:1.7;color:rgba(190,214,255,.48);position:relative;z-index:1}
+.calc-row{display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:13px 0;border-bottom:1px solid rgba(255,255,255,.09);font-size:13px;position:relative;z-index:1}
+.calc-row .k{color:rgba(214,230,255,.62);flex:none}
+.calc-row .v{font-family:var(--mono);font-size:12.5px;color:#dbeafe;text-align:right}
+.calc-row .v b{color:#7dd3fc;font-weight:600}
+.calc-result{margin-top:16px;padding:13px 15px;border-radius:11px;background:rgba(239,68,68,.12);border:1px solid rgba(248,113,113,.24);font-family:var(--mono);font-size:12.5px;line-height:1.7;color:#fecaca;position:relative;z-index:1}
+.calc-result b{color:#fff;font-weight:700}
+.ex-note{margin-top:14px;font-size:12px;line-height:1.8;color:rgba(190,214,255,.5);position:relative;z-index:1}
+.formula{margin-top:12px;padding:12px 14px;border-radius:10px;background:rgba(3,12,28,.55);border:1px solid rgba(125,211,252,.12);font-family:var(--mono);font-size:12.5px;line-height:1.7;color:#bfdbfe;overflow-x:auto;white-space:nowrap}
+
+/* ============ Ruler ============ */
+.ruler-panel{margin-top:56px;background:#fff;border:1px solid var(--line);border-radius:22px;padding:30px 32px 26px;box-shadow:var(--shadow-sm)}
+.ruler-head{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.ruler-head h3{font-size:18px;font-weight:700;letter-spacing:-.01em}
+.ruler-head p{margin-top:6px;max-width:680px;font-size:13.5px;line-height:1.8;color:var(--muted)}
+.ruler-band{display:grid;grid-template-columns:repeat(9,1fr);gap:6px;margin:26px 0 12px}
+.band{border-radius:10px;padding:13px 6px 11px;text-align:center;color:#fff;transition:transform .2s}
+.band:hover{transform:translateY(-3px)}
+.band b{display:block;font-size:13px;font-weight:700;letter-spacing:.02em}
+.band small{display:block;margin-top:3px;font-size:10.5px;opacity:.72;font-family:var(--mono)}
+.band.b1{background:#0a3d91}
+.band.b2{background:#0a4fae}
+.band.b3{background:#0a60d2}
+.band.b4{background:#0a66ff}
+.band.b5{background:#3b82f6}
+.band.b6{background:#60a5fa;color:#082048}
+.band.b7{background:#93c5fd;color:#082048}
+.band.b8{background:#c3ddff;color:#082048}
+.band.b9{background:#e4eeff;color:#082048}
+.ruler-foot{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:11.5px;color:var(--faint);border-top:1px solid var(--line-2);padding-top:14px}
+.ruler-foot .left,.ruler-foot .right{display:inline-flex;align-items:center;gap:7px}
+.ruler-foot .icon{width:14px;height:14px}
+
+/* ============ Levels ============ */
+.tabs-row{display:flex;align-items:flex-end;justify-content:space-between;gap:22px;flex-wrap:wrap;margin-bottom:28px}
+.tabs{display:inline-flex;gap:4px;padding:5px;background:#fff;border:1px solid var(--line);border-radius:999px;box-shadow:var(--shadow-sm);max-width:100%;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab-btn{padding:9px 18px;border-radius:999px;font-size:13.5px;font-weight:600;color:var(--muted);transition:background .2s,color .2s,box-shadow .2s;white-space:nowrap}
+.tab-btn:hover{color:var(--ink)}
+.tab-btn[aria-selected="true"]{background:linear-gradient(135deg,#2f7cff,#0a66ff);color:#fff;box-shadow:0 6px 16px rgba(10,102,255,.24)}
+.level-note{font-size:11.5px;color:var(--faint);display:flex;align-items:center;gap:6px}
+.level-note .icon{width:14px;height:14px}
+.level-panel{display:grid;grid-template-columns:.82fr 1.18fr;gap:40px;align-items:start}
+.level-kicker{font-size:10.5px;font-weight:700;letter-spacing:.18em;color:var(--primary);margin-bottom:10px}
+.level-info h3{font-size:23px;line-height:1.4;font-weight:700;letter-spacing:-.02em}
+.level-info>p{margin-top:10px;font-size:14.5px;line-height:1.85;color:var(--muted)}
+.check-list{margin-top:18px;display:grid;gap:9px}
+.check-list li{display:flex;align-items:flex-start;gap:9px;font-size:13.5px;line-height:1.7;color:var(--ink-2)}
+.check-list .icon{width:16px;height:16px;margin-top:3px;color:var(--green);flex:none}
+.scope{display:flex;align-items:flex-start;gap:8px;margin-top:20px;padding-top:14px;border-top:1px dashed #dbe3ee;font-size:11.5px;line-height:1.7;color:var(--faint)}
+.scope .icon{width:14px;height:14px;margin-top:2px;flex:none}
+.table-wrap{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow-sm)}
+.table-scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:540px}
+thead th{background:#f8fafc;text-align:left;padding:12px 15px;font-size:11.5px;font-weight:600;letter-spacing:.02em;color:var(--muted);border-bottom:1px solid var(--line);white-space:nowrap}
+tbody td{padding:13px 15px;border-bottom:1px solid var(--line-2);color:var(--ink-2);white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover td{background:#fafcff}
+td.num,th.num{text-align:right;font-family:var(--mono);font-size:12.5px;font-variant-numeric:tabular-nums}
+.up{color:var(--green);font-weight:600}
+.down{color:var(--red);font-weight:600}
+.flat{color:var(--muted)}
+.pill{display:inline-flex;align-items:center;font-size:11px;line-height:1;padding:5px 9px;border-radius:999px;font-weight:600}
+.pill-up{background:#ecfdf5;color:#047857;border:1px solid #d1fae5}
+.pill-flat{background:#f1f5f9;color:#475569;border:1px solid #e9eef5}
+.pill-down{background:#fef2f2;color:#b91c1c;border:1px solid #fee2e2}
+.table-mark{padding:10px 15px;border-top:1px solid var(--line-2);background:#fbfcfe;font-size:10.5px;color:var(--faint);letter-spacing:.02em}
+
+/* ============ Trust ============ */
+.pipeline{display:flex;align-items:stretch;gap:7px;flex-wrap:wrap;margin-bottom:16px}
+.pipeline-note{display:flex;align-items:flex-start;gap:8px;margin-bottom:34px;font-size:12px;line-height:1.8;color:var(--faint)}
+.pipeline-note .icon{width:14px;height:14px;margin-top:2px;flex:none}
+.pipe{flex:1 1 110px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:15px 10px;text-align:center;transition:border-color .2s,transform .2s;min-width:0}
+.pipe:hover{border-color:#bcd2f5;transform:translateY(-2px)}
+.pipe b{display:block;font-size:12.5px;color:var(--ink);font-weight:600;line-height:1.5}
+.pipe small{display:block;margin-top:3px;font-size:9.5px;color:var(--faint);letter-spacing:.06em;font-family:var(--mono)}
+.pipe-arrow{display:grid;place-items:center;color:#c3d3e8;flex:none;width:14px}
+.pipe-arrow .icon{width:14px;height:14px}
+.trust-card{padding:26px}
+.trust-card h3{margin-top:18px;font-size:16.5px;font-weight:700;color:var(--ink);letter-spacing:-.01em}
+.trust-card p{margin-top:8px;font-size:13.5px;line-height:1.8;color:var(--muted)}
+.trust-note{margin-top:22px;display:flex;align-items:flex-start;gap:10px;padding:16px 18px;border-radius:12px;background:#f8fafc;border:1px solid var(--line);font-size:12.5px;line-height:1.8;color:var(--muted)}
+.trust-note .icon{width:16px;height:16px;color:var(--primary);margin-top:3px;flex:none}
+.trust-note b{color:var(--ink-2);font-weight:600}
+
+/* ============ Workflow ============ */
+.flow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.flow-card{position:relative;background:#fff;border:1px solid var(--line);border-radius:18px;padding:26px;transition:transform .25s,box-shadow .25s,border-color .25s}
+.flow-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md);border-color:#cbd5e1}
+.flow-card .step-no{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--primary);font-weight:600}
+.flow-card h3{margin-top:12px;font-size:16.5px;font-weight:700;color:var(--ink)}
+.flow-card p{margin-top:8px;font-size:13.5px;line-height:1.8;color:var(--muted)}
+.flow-card .out{display:inline-flex;align-items:center;gap:6px;margin-top:16px;font-size:11px;color:#0b4dbb;background:#eef4ff;border:1px solid #dbe7ff;padding:5px 9px;border-radius:7px}
+.flow-card .out .icon{width:13px;height:13px}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px}
+.chip{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:var(--ink-2);background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 14px}
+.chip .icon{width:14px;height:14px;color:var(--green)}
+
+/* ============ Scenarios ============ */
+.scenario-card{position:relative;overflow:hidden;display:flex;flex-direction:column}
+.scenario-card::after{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,#38bdf8,#0a66ff,#8b5cf6);opacity:0;transition:opacity .25s}
+.scenario-card:hover::after{opacity:1}
+.scenario-card h3{margin-top:20px;font-size:18.5px;font-weight:700;letter-spacing:-.01em}
+.scenario-card p{margin-top:9px;font-size:13.5px;line-height:1.85;color:var(--muted);flex:1}
+.tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px}
+.scenario-note{margin-top:26px;display:flex;align-items:flex-start;gap:9px;padding:16px 18px;border-radius:12px;background:#fff;border:1px solid var(--line);font-size:12px;line-height:1.8;color:var(--muted)}
+.scenario-note .icon{width:15px;height:15px;color:var(--primary);margin-top:3px;flex:none}
+
+/* ============ Roles ============ */
+.role-card{padding:26px}
+.role-head{display:flex;align-items:center;gap:11px}
+.role-avatar{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#eef4ff,#ede9fe);color:#3730a3;font-size:12px;font-weight:700;border:1px solid #e0e7ff;flex:none}
+.role-head b{font-size:14.5px;color:var(--ink);font-weight:700}
+.role-card .q{margin-top:16px;font-size:14.5px;line-height:1.75;font-weight:600;color:var(--ink)}
+.role-card .q::before{content:"“";color:var(--primary);margin-right:2px}
+.role-card .q::after{content:"”";color:var(--primary);margin-left:2px}
+.role-card .a{margin-top:10px;font-size:13px;line-height:1.8;color:var(--muted);padding-top:10px;border-top:1px dashed #e3e9f2}
+.principle{margin-top:26px;display:flex;align-items:flex-start;gap:12px;padding:20px 22px;border-radius:14px;background:linear-gradient(110deg,#fffbeb,#fef3c7 130%);border:1px solid #fde68a;font-size:13.5px;line-height:1.8;color:#713f12}
+.principle .icon{width:18px;height:18px;color:#b45309;margin-top:2px;flex:none}
+
+/* ============ Roadmap ============ */
+.roadmap-grid{display:grid;grid-template-columns:.92fr 1.08fr;gap:48px;align-items:start}
+.current-box{border:1px solid rgba(125,211,252,.16);background:rgba(255,255,255,.03);border-radius:20px;padding:28px}
+.current-box h3{font-size:15px;color:#bfdbfe;font-weight:600;letter-spacing:.02em;display:flex;align-items:center;gap:8px}
+.status-dot{width:7px;height:7px;border-radius:50%;background:#34d399;box-shadow:0 0 0 4px rgba(52,211,153,.12)}
+.current-list{margin-top:16px;display:grid;gap:12px}
+.current-list li{display:flex;align-items:flex-start;gap:9px;font-size:13.5px;line-height:1.7;color:rgba(226,240,255,.72)}
+.current-list .icon{width:15px;height:15px;color:#34d399;margin-top:3px;flex:none}
+.current-list b{color:#fff;font-weight:600}
+.roadmap-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.roadmap-card{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:20px;transition:background .2s,transform .2s,border-color .2s}
+.roadmap-card:hover{background:rgba(255,255,255,.075);border-color:rgba(125,211,252,.28);transform:translateY(-3px)}
+.soon{display:inline-flex;align-items:center;gap:5px;font-size:9.5px;letter-spacing:.08em;padding:4px 8px;border-radius:999px;background:rgba(245,158,11,.14);border:1px solid rgba(245,158,11,.28);color:#fbbf24;white-space:nowrap}
+.soon::before{content:"";width:4px;height:4px;border-radius:50%;background:#fbbf24}
+.roadmap-card h4{margin-top:14px;font-size:14.5px;font-weight:600;color:#f1f7ff;line-height:1.5}
+.roadmap-card p{margin-top:6px;font-size:12px;line-height:1.75;color:rgba(190,214,255,.52)}
+.roadmap-note{margin-top:18px;font-size:11px;color:rgba(190,214,255,.4);display:flex;align-items:flex-start;gap:7px}
+.roadmap-note .icon{width:13px;height:13px;margin-top:2px;flex:none}
+
+/* ============ Do ============ */
+.do-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.do-card{position:relative;background:#fff;border:1px solid var(--line);border-radius:18px;padding:28px;overflow:hidden}
+.do-card .big{position:absolute;right:18px;top:10px;font-size:64px;line-height:1;font-weight:800;color:#f1f5fb;letter-spacing:-.05em;pointer-events:none}
+.do-card h3{position:relative;font-size:17px;font-weight:700;color:var(--ink);margin-top:14px}
+.do-card p{position:relative;margin-top:8px;font-size:13.5px;line-height:1.8;color:var(--muted)}
+.do-card .out{position:relative;display:inline-flex;align-items:center;gap:6px;margin-top:16px;font-size:11px;color:#0b4dbb;background:#eef4ff;border:1px solid #dbe7ff;padding:5px 9px;border-radius:7px}
+.do-card .out .icon{width:13px;height:13px}
+.do-card .step-no{position:relative;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.12em;color:var(--primary)}
+
+/* ============ FAQ ============ */
+.faq-list{max-width:900px;border-top:1px solid var(--line)}
+.faq-item{border-bottom:1px solid var(--line)}
+.faq-item summary{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:22px 2px;cursor:pointer;list-style:none;font-size:16px;font-weight:600;color:var(--ink);line-height:1.6}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary::after{content:"";width:12px;height:12px;flex:none;border-right:2px solid var(--primary);border-bottom:2px solid var(--primary);transform:rotate(45deg);transition:transform .25s;margin-right:4px;margin-top:-4px}
+.faq-item[open] summary::after{transform:rotate(-135deg);margin-top:4px}
+.faq-item summary:hover{color:var(--primary)}
+.faq-a{padding:0 34px 24px 2px;font-size:14px;line-height:1.9;color:var(--muted);max-width:860px}
+.faq-a b{color:var(--ink-2);font-weight:600}
+.faq-a code{font-family:var(--mono);font-size:12px;background:#f1f5f9;padding:2px 6px;border-radius:4px;color:#0b4dbb}
+
+/* ============ CTA ============ */
+.cta-section{padding:0 0 clamp(72px,8vw,104px);scroll-margin-top:calc(var(--nav-h) + 18px)}
+.cta-card{position:relative;overflow:hidden;border-radius:var(--radius-xl);padding:clamp(40px,6vw,76px) clamp(24px,5vw,64px);text-align:center;color:#fff;background:linear-gradient(120deg,#0a66ff 0%,#3b5bdb 45%,#6d3ee8 100%);box-shadow:0 34px 80px rgba(35,64,170,.28)}
+.cta-card::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px);background-size:52px 52px;mask-image:radial-gradient(circle at 50% 40%,#000,transparent 75%);-webkit-mask-image:radial-gradient(circle at 50% 40%,#000,transparent 75%)}
+.cta-card::after{content:"";position:absolute;width:480px;height:480px;border-radius:50%;right:-140px;bottom:-280px;background:radial-gradient(circle,rgba(255,255,255,.18),transparent 65%)}
+.cta-card>*{position:relative;z-index:1}
+.cta-kicker{display:inline-flex;align-items:center;gap:8px;font-size:10.5px;letter-spacing:.18em;font-weight:600;color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.24);padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.08);margin-bottom:20px}
+.cta-card h2{font-size:clamp(28px,4vw,44px);color:#fff;letter-spacing:-.03em}
+.cta-card p{margin:16px auto 0;max-width:660px;font-size:15.5px;line-height:1.9;color:rgba(255,255,255,.78)}
+.cta-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:32px}
+.br-m{display:none}
+.cta-card .btn-white{color:#1c3fb8}
+.cta-card .btn-ghost{border-color:rgba(255,255,255,.36);color:#fff;background:rgba(255,255,255,.08)}
+.cta-foot{margin-top:22px;font-size:11px;color:rgba(255,255,255,.55)}
+
+/* ============ Footer ============ */
+.footer{background:#fff;border-top:1px solid var(--line);padding:52px 0 26px}
+.footer-grid{display:grid;grid-template-columns:1.3fr .8fr .9fr;gap:40px}
+.footer-brand{display:flex;align-items:center;gap:12px}
+.footer-brand .brand-mark{width:38px;height:38px;border-radius:11px;display:grid;font-size:13px}
+.footer-brand .brand-text b{display:block;font-size:14.5px;color:var(--ink);font-weight:700}
+.footer-brand .brand-text span{display:block;font-size:9px;letter-spacing:.14em;color:var(--faint);margin-top:2px}
+.footer-desc{margin-top:16px;max-width:360px;font-size:12.5px;line-height:1.85;color:var(--muted)}
+.footer h4{font-size:11.5px;letter-spacing:.1em;color:var(--faint);font-weight:600;text-transform:uppercase;margin-bottom:12px}
+.footer-links{display:grid;grid-template-columns:repeat(2,1fr);gap:8px 18px}
+.footer-links a{font-size:12.5px;color:var(--muted);transition:color .2s}
+.footer-links a:hover{color:var(--primary)}
+.footer-meta{font-size:12px;line-height:1.9;color:var(--muted)}
+.footer-meta .v{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#0b4dbb;background:#eef4ff;border:1px solid #dbe7ff;border-radius:999px;padding:4px 9px;margin-bottom:10px}
+.footer-bottom{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:36px;padding-top:20px;border-top:1px solid var(--line-2);font-size:11px;color:var(--faint)}
+.footer-bottom span{display:inline-flex;align-items:center;gap:6px}
+.footer-bottom .icon{width:13px;height:13px}
+
+/* ============ Reveal ============ */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0s)}
+.reveal.is-visible{opacity:1;transform:none}
+
+/* ============ Responsive ============ */
+@media (max-width:1120px){
+  .nav-links{display:none}
+  .nav-toggle{display:block}
+  .hero-grid{grid-template-columns:1fr;gap:46px}
+  .hero-visual{max-width:660px;width:100%;margin-inline:auto}
+  .hero .lede{max-width:640px}
+  .float-badge--a{right:6px}
+  .float-badge--b{left:6px}
+  .method-grid{grid-template-columns:minmax(0,1fr);gap:40px}
+  .level-panel{grid-template-columns:minmax(0,1fr);gap:26px}
+  .roadmap-grid{grid-template-columns:minmax(0,1fr);gap:34px}
+}
+@media (max-width:960px){
+  .grid-3{grid-template-columns:minmax(0,1fr)}
+  .grid-4{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .flow-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .do-grid{grid-template-columns:minmax(0,1fr)}
+  .scenario-card+.scenario-card{margin-top:0}
+  .footer-grid{grid-template-columns:1fr 1fr;gap:32px}
+  .footer-brand-col{grid-column:1/-1}
+}
+@media (max-width:768px){
+  :root{--nav-h:66px}
+  .br-m{display:inline}
+  .container{width:calc(100% - 32px)}
+  .section{padding:62px 0}
+  .hero{padding-top:calc(var(--nav-h) + 50px);padding-bottom:88px}
+  .hero h1{font-size:clamp(34px,8.4vw,46px)}
+  .hero .lede{font-size:15px}
+  .hero-actions{gap:10px}
+  .strip{margin-top:-44px}
+  .strip-card{grid-template-columns:repeat(2,minmax(0,1fr));padding:8px}
+  .strip-item{padding:14px 16px;border-left:0;border-top:1px solid var(--line-2)}
+  .strip-item:nth-child(-n+2){border-top:0}
+  .strip-item:nth-child(even){border-left:1px solid var(--line-2)}
+  .strip-item b{font-size:16px}
+  .strip-item span{font-size:11px}
+  .grid-4{grid-template-columns:minmax(0,1fr)}
+  .flow-grid{grid-template-columns:minmax(0,1fr)}
+  .roadmap-cards{grid-template-columns:minmax(0,1fr)}
+  .card,.trust-card,.role-card,.flow-card,.do-card,.scenario-card{padding:24px}
+  .statement{padding:22px 20px;font-size:15px}
+  .ruler-panel{padding:22px 18px}
+  .band{padding:10px 3px 9px;border-radius:8px}
+  .band b{font-size:11.5px}
+  .band small{font-size:9px}
+  .pipeline{gap:6px}
+  .pipe{flex:1 1 31%}
+  .pipe-arrow{display:none}
+  .tabs-row{align-items:flex-start}
+  .level-note{display:none}
+  .table-wrap{border-radius:13px}
+  .footer-grid{grid-template-columns:minmax(0,1fr);gap:26px}
+  .footer-bottom{flex-direction:column;align-items:flex-start;gap:8px}
+  .float-badge{display:none}
+  .chain-card{padding:16px 14px 14px}
+  .hero-visual::before{inset:0}
+  .cta-card{border-radius:22px}
+  .footer{padding-top:40px}
+}
+@media (max-width:520px){
+  .brand-text small{display:none}
+  .hero-actions .btn,.cta-actions .btn{width:100%}
+  .home-login{padding:14px 13px 12px}
+  .home-login-head{flex-wrap:wrap;gap:4px 10px}
+  .home-login-row{grid-template-columns:minmax(0,1fr)}
+  .home-login-btn{width:100%}
+  .brand-text strong{font-size:13.5px}
+  .brand-mark{width:36px;height:36px;border-radius:10px;font-size:12px}
+  .hero-meta{font-size:11.5px}
+  .step{grid-template-columns:40px 1fr;gap:12px}
+  .step h3{font-size:16px}
+  .step code{white-space:normal;overflow-wrap:anywhere}
+  .ruler-band{gap:4px}
+  .band b{font-size:10px;letter-spacing:0}
+  .band small{font-size:8.5px}
+  .faq-item summary{font-size:15px;padding:19px 0}
+  .faq-a{padding-right:8px}
+  .calc-row{flex-direction:column;align-items:flex-start;gap:4px}
+  .calc-row .v{text-align:left}
+  .tabs{width:100%}
+  .tab-btn{flex:1;padding:9px 10px;text-align:center;font-size:12.5px}
+  .cta-card h2{font-size:27px}
+  .footer-links{grid-template-columns:1fr 1fr}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+  .reveal{opacity:1;transform:none}
+  .chain-exit{stroke-dashoffset:0}
+  .chain-entry,.chain-fade{opacity:1}
+  .float-badge{animation:none}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">跳到主要内容</a>
+<div class="progress" id="progress" aria-hidden="true"></div>
+
+<svg aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0;overflow:hidden">
+  <symbol id="i-ruler" viewBox="0 0 24 24"><path d="M3 17.5 17.5 3 21 6.5 6.5 21 3 17.5Z"/><path d="m7 13 2 2M10 10l2 2M13 7l2 2"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 12 9 5 9-5"/><path d="m3 16 9 5 9-5"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4.4-3 8-7 9-4-1-7-4.6-7-9V6l7-3Z"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="i-route" viewBox="0 0 24 24"><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="6" r="2.5"/><path d="M8.5 18H12a4 4 0 0 0 4-4V8.5"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M16 5.5a3 3 0 0 1 0 5.8"/><path d="M18 20c0-2.4-1-4.5-2.6-5.8"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v18H6.5A2.5 2.5 0 0 1 4 18.5v-13Z"/><path d="M4 18.5A2.5 2.5 0 0 1 6.5 16H20"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 20h18"/><path d="M6 20v-6M11 20V9M16 20v-9M21 20V5"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-flow" viewBox="0 0 24 24"><rect x="3" y="4" width="7" height="5" rx="1.5"/><rect x="14" y="15" width="7" height="5" rx="1.5"/><path d="M10 6.5h4a3 3 0 0 1 3 3V15"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></symbol>
+  <symbol id="i-school" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V10l7-5 7 5v11"/><path d="M9 21v-6h6v6"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4.5 4.5L19 7"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><circle cx="12" cy="8" r=".9" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5 5-2Z"/></symbol>
+</svg>
+
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a class="brand" href="#top" aria-label="成绩增值评价系统首页">
+      <span class="brand-mark">VE</span>
+      <span class="brand-text">
+        <strong>成绩增值评价系统</strong>
+        <small>VALUE-ADDED EVALUATION</small>
+      </span>
+    </a>
+    <nav class="nav-links" aria-label="主导航">
+      <a class="nav-link" href="#problem">为什么</a>
+      <a class="nav-link" href="#method">怎么算</a>
+      <a class="nav-link" href="#levels">四层结果</a>
+      <a class="nav-link" href="#trust">可信</a>
+      <a class="nav-link" href="#scenarios">适用场景</a>
+      <a class="nav-link" href="#roadmap">规划</a>
+      <a class="nav-link" href="#faq">常见问题</a>
+    </nav>
+    <button class="nav-toggle" id="navToggle" aria-label="打开菜单" aria-expanded="false" aria-controls="mobileMenu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#problem">为什么</a>
+  <a href="#method">怎么算</a>
+  <a href="#levels">四层结果</a>
+  <a href="#trust">可信</a>
+  <a href="#scenarios">适用场景</a>
+  <a href="#roadmap">规划</a>
+  <a href="#faq">常见问题</a>
+  <div class="m-note">成绩增值评价系统 · 多校联考增值评价</div>
+</div>
+
+<main id="main">
+
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <div class="hero-kicker"><span class="pulse"></span>多校联考 · 增值评价</div>
+        <h1>看见每一所学校的<br><span class="grad">真实增值</span></h1>
+        <p class="lede">不比一次考试的绝对分，比两个时间点之间，学生在联考全体中的位置变化。让“低进高出”被看见，让教学改进有据可依。</p>
+        <form class="home-login" id="homeLogin" aria-labelledby="homeLoginTitle" novalidate>
+          <div class="home-login-head">
+            <b id="homeLoginTitle">登录系统</b>
+            <span>运营管理员 / 学校管理员</span>
+          </div>
+          <div class="home-login-row">
+            <label class="sr-only" for="homeUsername">用户名</label>
+            <input class="home-input" id="homeUsername" name="username" type="text" autocomplete="username" placeholder="用户名" spellcheck="false" />
+            <label class="sr-only" for="homePassword">密码</label>
+            <input class="home-input" id="homePassword" name="password" type="password" autocomplete="current-password" placeholder="密码" />
+            <button class="home-login-btn" id="homeLoginBtn" type="submit">登录</button>
+          </div>
+          <div class="home-login-error" id="homeLoginError" role="alert" hidden></div>
+          <div class="home-login-hint">登录后进入系统；账号由管理员分配。</div>
+        </form>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#method">了解评价逻辑<svg aria-hidden="true" focusable="false" class="icon"><use href="#i-arrow"/></svg></a>
+          <a class="btn btn-ghost" href="#levels">查看四层结果</a>
+        </div>
+        <div class="hero-meta">
+          <svg aria-hidden="true" focusable="false" class="icon"><use href="#i-info"/></svg>
+          <span>适用于区域联考、教育集团与单校评价；学校数量、学段与考试组织都可扩展，科目按学段内置。</span>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="float-badge float-badge--a"><small>位置变化</small><b>Δz +0.42</b><span> · 进步</span></div>
+        <div class="float-badge float-badge--b"><b>9 档等级</b><br><span>G1 = 90 → G9 = 10</span></div>
+        <div class="chain-card">
+          <div class="chain-head">
+            <b>评价链路</b>
+            <small>ENTRY → EXIT</small>
+          </div>
+          <svg class="chain-svg" viewBox="0 0 600 330" role="img" aria-label="同一批学生在入口与评价两次考试中的位置变化示意">
+            <defs>
+              <linearGradient id="lineUp" x1="0" y1="1" x2="1" y2="0">
+                <stop offset="0%" stop-color="#38bdf8"/>
+                <stop offset="100%" stop-color="#34d399"/>
+              </linearGradient>
+              <linearGradient id="lineDown" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#f472b6"/>
+                <stop offset="100%" stop-color="#f87171"/>
+              </linearGradient>
+            </defs>
+            <g stroke="rgba(255,255,255,.06)" stroke-width="1">
+              <path d="M30 80H570M30 140H570M30 200H570M30 260H570"/>
+              <path d="M120 56V286M480 56V286" stroke-dasharray="3 7"/>
+            </g>
+            <text x="120" y="40" text-anchor="middle" fill="rgba(226,240,255,.55)" font-size="12">入口位置</text>
+            <text x="480" y="40" text-anchor="middle" fill="rgba(226,240,255,.55)" font-size="12">评价位置</text>
+            <text x="120" y="20" text-anchor="middle" fill="rgba(125,211,252,.4)" font-size="9" letter-spacing="2">ENTRY</text>
+            <text x="480" y="20" text-anchor="middle" fill="rgba(196,181,253,.42)" font-size="9" letter-spacing="2">EXIT</text>
+
+            <g stroke="rgba(255,255,255,.17)" stroke-width="1.4" fill="none">
+              <path d="M120 205 480 176"/>
+              <path d="M120 165 480 170"/>
+              <path d="M120 125 480 156"/>
+              <path d="M120 285 480 238"/>
+              <path d="M120 88 480 112"/>
+            </g>
+
+            <path class="chain-exit" d="M120 252 480 186" stroke="url(#lineUp)" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+            <path class="chain-exit" d="M120 88 480 112" stroke="url(#lineDown)" stroke-width="2" fill="none" stroke-linecap="round" opacity=".85"/>
+
+            <g fill="rgba(255,255,255,.34)">
+              <circle cx="120" cy="205" r="3.4"/><circle cx="120" cy="165" r="3.4"/><circle cx="120" cy="125" r="3.4"/><circle cx="120" cy="285" r="3.4"/><circle cx="120" cy="88" r="3.4"/>
+              <circle cx="480" cy="176" r="3.4"/><circle cx="480" cy="170" r="3.4"/><circle cx="480" cy="156" r="3.4"/><circle cx="480" cy="238" r="3.4"/><circle cx="480" cy="112" r="3.4"/>
+            </g>
+            <circle cx="120" cy="252" r="4.4" fill="#38bdf8"/>
+            <circle cx="480" cy="186" r="4.8" fill="#34d399"/>
+            <circle cx="120" cy="88" r="4.4" fill="#f472b6"/>
+            <circle cx="480" cy="112" r="4.8" fill="#f87171"/>
+
+            <g class="chain-fade">
+              <rect x="268" y="192" width="66" height="26" rx="13" fill="rgba(16,185,129,.14)" stroke="rgba(52,211,153,.34)"/>
+              <text x="301" y="209" text-anchor="middle" fill="#6ee7b7" font-size="12" font-weight="600">+1 级</text>
+              <rect x="352" y="92" width="60" height="24" rx="12" fill="rgba(248,113,113,.12)" stroke="rgba(248,113,113,.3)"/>
+              <text x="382" y="108" text-anchor="middle" fill="#fca5a5" font-size="11.5" font-weight="600">−1 级</text>
+            </g>
+            <text x="300" y="316" text-anchor="middle" fill="rgba(190,214,255,.33)" font-size="10.5" letter-spacing=".08em">同一批学生 · 两次考试的位置变化（示意）</text>
+          </svg>
+          <div class="chain-legend">
+            <span><i class="legend-dot legend-dot--up"></i>进步</span>
+            <span><i class="legend-dot legend-dot--flat"></i>保持</span>
+            <span><i class="legend-dot legend-dot--down"></i>退步</span>
+            <span class="spacer">标准分口径 · 示意数据</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="strip">
+    <div class="container">
+      <div class="strip-card">
+        <div class="strip-item"><b><em>2</em> 个时间点</b><span>入口考试作为起点，评价考试作为终点</span></div>
+        <div class="strip-item"><b><em>4</em> 层结果</b><span>学生、班级、教师、学校逐层汇总</span></div>
+        <div class="strip-item"><b><em>1</em> 套口径</b><span>所有学校放在同一个联考总体内比较</span></div>
+        <div class="strip-item"><b>全链路</b><span>原始成绩 → 计算过程 → 结果，可追溯</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROBLEM -->
+  <section class="section" id="problem">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow">The Problem</div>
+        <h2>只看平均分，很容易把“生源好”当成“教得好”</h2>
+        <p class="lead">试卷难度、学生起点、参考群体都在变。绝对分的涨跌，无法回答“这段时间的教学到底带来了多少变化”。</p>
+      </div>
+      <div class="grid-3">
+        <article class="card problem-card reveal" style="--d:.02s">
+          <span class="num">01</span>
+          <div class="icon-tile icon-tile--slate"><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-ruler"/></svg></div>
+          <h3>难度一变，分数就失去可比性</h3>
+          <p>同一批学生换一份卷子，联考均分可能整体上移 20 分。个人 +10 分，可能只是“没跟上大盘”，甚至意味着位置后退。</p>
+        </article>
+        <article class="card problem-card reveal" style="--d:.1s">
+          <span class="num">02</span>
+          <div class="icon-tile icon-tile--violet"><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-users"/></svg></div>
+          <h3>起点不同，终点排名并不公平</h3>
+          <p>入口均分相差 80 分的两个班，用出口均分排名，相当于用终点线代替起跑线。生源差异被误读成教学差异。</p>
+        </article>
+        <article class="card problem-card reveal" style="--d:.18s">
+          <span class="num">03</span>
+          <div class="icon-tile icon-tile--amber"><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-target"/></svg></div>
+          <h3>只有结果，没有过程，就无法归因</h3>
+          <p>知道“这次考得怎么样”，却不知道“哪个学科、哪类学生、哪段教学起了作用”。评价停在排名，改进就无从发生。</p>
+        </article>
+      </div>
+      <div class="statement reveal" style="--d:.1s">
+        <span class="mark">换一个问题</span>
+        增值评价不是问“这次考了多少分”，而是问<strong>“从入口到出口，学生的位置前进了多少”</strong>。同一把尺子，才能把不同起点、不同难度、不同学校的教学贡献放在一起比较。
+      </div>
+    </div>
+  </section>
+
+  <!-- METHOD -->
+  <section class="section section--white" id="method">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow">The Method</div>
+        <h2>同一把尺子，量出真实变化</h2>
+        <p class="lead">以联考全体为参照，把成绩换算成标准分，再比较两次考试的位置变化。难度不同、科目不同、学校不同，都能放到同一把尺子上。</p>
+      </div>
+
+      <div class="method-grid">
+        <div class="steps">
+          <div class="step reveal">
+            <div class="step-index">01</div>
+            <div>
+              <h3>锁定两个时间点</h3>
+              <p>入口考试作为起点，评价考试作为终点。两场考试覆盖同一批学生、同一组科目，形成可比较的“入口—出口”区间。</p>
+            </div>
+          </div>
+          <div class="step reveal" style="--d:.06s">
+            <div class="step-index">02</div>
+            <div>
+              <h3>换算成联考位置</h3>
+              <p><code>z =（本人分数 − 联考均值）÷ 联考标准差</code>。高出几个标准差，就代表在联考全体中处于什么位置；不同科目、不同满分被统一到同一尺度。</p>
+            </div>
+          </div>
+          <div class="step reveal" style="--d:.12s">
+            <div class="step-index">03</div>
+            <div>
+              <h3>比较位置变化</h3>
+              <p><code>Δz = 评价 z − 入口 z</code>。上升是进步，下降是退步，小幅波动视为保持。看的是“相对位置”，不是“绝对分数”。</p>
+            </div>
+          </div>
+          <div class="step reveal" style="--d:.18s">
+            <div class="step-index">04</div>
+            <div>
+              <h3>判定进步幅度</h3>
+              <p>默认保持阈值 0.25 个标准差、每级步长 0.5 个标准差；超过阈值后按级数计进步或退步，再折算为等级与权重，进入四层汇总。</p>
+            </div>
+          </div>
+        </div>
+
+        <aside class="example-card reveal" style="--d:.12s">
+          <div class="ex-top">
+            <span class="ex-badge">计算示例 · 虚构数据</span>
+            <svg aria-hidden="true" focusable="false" class="icon icon-sm" style="color:rgba(147,197,253,.5)"><use href="#i-spark"/></svg>
+          </div>
+          <h3>分数涨了，<br>为什么可能判退步？</h3>
+          <p class="ex-sub">同一个学生，入口 80 分，评价 90 分。个人涨了 10 分，但联考整体涨得更多。</p>
+          <div style="margin-top:18px">
+            <div class="calc-row">
+              <span class="k">入口</span>
+              <span class="v">80 分｜均值 75｜σ 10 → z = <b>0.50</b></span>
+            </div>
+            <div class="calc-row">
+              <span class="k">评价</span>
+              <span class="v">90 分｜均值 88｜σ 10 → z = <b>0.20</b></span>
+            </div>
+            <div class="calc-row">
+              <span class="k">位置变化</span>
+              <span class="v">Δz = 0.20 − 0.50 = <b>−0.30</b></span>
+            </div>
+          </div>
+          <div class="calc-result">|Δz| = 0.30 &gt; 0.25 → <b>退步 1 级</b></div>
+          <div class="formula">z = (x − μ) ÷ σ　　Δz = z<sub>评价</sub> − z<sub>入口</sub></div>
+          <p class="ex-note">分数是“绝对量”，位置是“相对量”。当所有人都在进步时，原地踏步就是后退——这正是增值评价要看清的部分。</p>
+        </aside>
+      </div>
+
+      <div class="ruler-panel reveal" style="--d:.08s">
+        <div class="ruler-head">
+          <div>
+            <h3>9 档，把“位置”变成可解释的等级</h3>
+            <p>默认按标准正态 Z 区间划分 G1–G9，每档对应一个位置权重（G1 = 90 … G9 = 10）。等级用于判定与汇总，权重只参与计算，不参与划档。</p>
+          </div>
+          <span class="tag">默认档位 · 支持自定义</span>
+        </div>
+        <div class="ruler-band" aria-label="9 档等级与权重示意">
+          <div class="band b1"><b>G1</b><small>90</small></div>
+          <div class="band b2"><b>G2</b><small>80</small></div>
+          <div class="band b3"><b>G3</b><small>70</small></div>
+          <div class="band b4"><b>G4</b><small>60</small></div>
+          <div class="band b5"><b>G5</b><small>50</small></div>
+          <div class="band b6"><b>G6</b><small>40</small></div>
+          <div class="band b7"><b>G7</b><small>30</small></div>
+          <div class="band b8"><b>G8</b><small>20</small></div>
+          <div class="band b9"><b>G9</b><small>10</small></div>
+        </div>
+        <div class="ruler-foot">
+          <span class="left"><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-info"/></svg>等级按 Z 区间判定，不按人数比例强制切分</span>
+          <span class="right">不同档位、不同参数的结果不能直接比较</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LEVELS -->
+  <section class="section" id="levels">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow">Four Levels</div>
+        <h2>从“谁在进步”，到“哪里有效”</h2>
+        <p class="lead">一次计算，同时产出学生、班级、教师、学校四层结果。指标口径一致，排名范围清晰：学生在联考中比，班级和教师在校内比，学校在联考中比。</p>
+      </div>
+
+      <div class="tabs-row reveal">
+        <div class="tabs" role="tablist" aria-label="四层结果">
+          <button class="tab-btn" id="tab-student" role="tab" aria-selected="true" aria-controls="panel-student" tabindex="0">学生结果</button>
+          <button class="tab-btn" id="tab-class" role="tab" aria-selected="false" aria-controls="panel-class" tabindex="-1">班级结果</button>
+          <button class="tab-btn" id="tab-teacher" role="tab" aria-selected="false" aria-controls="panel-teacher" tabindex="-1">教师结果</button>
+          <button class="tab-btn" id="tab-school" role="tab" aria-selected="false" aria-controls="panel-school" tabindex="-1">学校结果</button>
+        </div>
+        <span class="level-note"><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-info"/></svg>表格为结构示意，非真实数据</span>
+      </div>
+
+      <div class="level-panels">
+        <!-- Student -->
+        <div class="level-panel" id="panel-student" role="tabpanel" aria-labelledby="tab-student">
+          <div class="level-info reveal">
+            <div class="level-kicker">STUDENT</div>
+            <h3>看见每个孩子的位移</h3>
+            <p>不看单次分数，看入口到评价的等级变化与联考位置变化；可按科目切换，定位到具体学科。</p>
+            <ul class="check-list">
+              <li><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-check"/></svg>入口值 / 评价值、联考排名</li>
+              <li><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-check"/></svg>入口等级 → 评价等级、变化级数</li>
+              <li><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-check"/></svg>保持 / 进步 / 退步判定</li>
+            </ul>
+            <div class="scope"><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-target"/></svg><span>排名范围：联考全体同科目；总分按物理类 / 历史类分别比较。</span></div>
+          </div>
+          <div class="table-wrap reveal" style="--d:.1s">
+            <div class="table-scroll">
+              <table>
+                <thead><tr><th scope="col">学生</th><th scope="col">入口等级</th><th scope="col">评价等级</th><th scope="col">变化</th><th scope="col">判定</th><th scope="col" class="num">联考排名</th></tr></thead>
+                <tbody>
+                  <tr><td>学生 A</td><td>G4</td><td>G3</td><td class="up">↑ 1</td><td><span class="pill pill-up">进步</span></td><td class="num">268</td></tr>
+                  <tr><td>学生 B</td><td>G3</td><td>G3</td><td class="flat">—</td><td><span class="pill pill-flat">保持</span></td><td class="num">402</td></tr>
+                  <tr><td>学生 C</td><td>G3</td><td>G5</td><td class="down">↓ 2</td><td><span class="pill pill-down">退步</span></td><td class="num">611</td></tr>
+                  <tr><td>学生 D</td><td>G5</td><td>G4</td><td class="up">↑ 1</td><td><span class="pill pill-up">进步</span></td><td class="num">356</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="table-mark">示意数据 · 用于说明字段结构 · 小屏可左右滑动查看</div>
+          </div>
+        </div>
+
+        <!-- Class -->
+        <div class="level-panel" id="panel-class" role="tabpanel" aria-labelledby="tab-class" hidden>
+          <div class="level-info">
+            <div class="level-kicker">CLASS</div>
+            <h3>找到真正在净进步的班级</h3>
+            <p>把学生的等级变化汇总成班级指标，既看“现在的位置”，也看“位置是怎么移动的”，避免用平均分掩盖结构。</p>
+            <ul class="check-list">
+              <li><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-check"/></svg>学业实力：当前整体位置</li>
+              <li><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-check"/></svg>保持值 / 进步值 / 退步值：变化结构</li>
+              <li><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-check"/></svg>相对进步率、平均级数、进步占比</li>
+            </ul>
+            <div class="scope"><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-target"/></svg><span>排名范围：校内同科目；人数少于 8 人的班级只展示指标、不参与排名。</span></div>
+          </div>
+          <div class="table-wrap">
+            <div class="table-scroll">
+              <table>
+                <thead><tr><th scope="col">班级</th><th scope="col" class="num">人数</th><th scope="col" class="num">学业实力</th><th scope="col" class="num">保持值</th><th scope="col" class="num">进步值</th><th scope="col" class="num">退步值</th><th scope="col" class="num">相对进步率</th><th scope="col" class="num">校内排名</th></tr></thead>
+                <tbody>
+                  <tr><td>1 班</td><td class="num">42</td><td class="num">65.0</td><td class="num">29.0</td><td class="num">13.0</td><td class="num">16.0</td><td class="num">2.16</td><td class="num">2</td></tr>
+                  <tr><td>2 班</td><td class="num">40</td><td class="num">62.4</td><td class="num">26.5</td><td class="num">15.2</td><td class="num">18.8</td><td class="num">1.94</td><td class="num">4</td></tr>
+                  <tr><td>3 班</td><td class="num">38</td><td class="num">58.7</td><td class="num">24.1</td><td class="num">10.6</td><td class="num">21.3</td><td class="num">1.52</td><td class="num">7</td></tr>
+                  <tr><td>4 班</td><td class="num">41</td><td class="num">66.2</td><td class="num">30.4</td><td class="num">12.1</td><td class="num">15.2</td><td class="num">2.31</td><td class="num">1</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="table-mark">示意数据 · 相对进步率为业务合成指标，不是百分比 · 小屏可左右滑动查看</div>
+          </div>
+        </div>
+
+        <!-- Teacher -->
+        <div class="level-panel" id="panel-teacher" role="tabpanel" aria-labelledby="tab-teacher" hidden>
+          <div class="level-info">
+            <div class="level-kicker">TEACHER</div>
+            <h3>把证据落到学科与教学</h3>
+            <p>按“教师 × 科目”汇总其任教班级的增值表现，帮助学科教研定位问题，而不是用一次平均分评价一位老师。</p>
+            <ul class="check-list">
+              <li><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-check"/></svg>教师、科目、任教班级、人数</li>
+              <li><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-check"/></svg>学业实力、相对进步率、平均级数</li>
+              <li><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-check"/></svg>校内同科目排名</li>
+            </ul>
+            <div class="scope"><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-target"/></svg><span>排名范围：校内同科目；未匹配到教师的成绩不进入教师结果，单独列入异常。</span></div>
+          </div>
+          <div class="table-wrap">
+            <div class="table-scroll">
+              <table>
+                <thead><tr><th scope="col">教师</th><th scope="col">科目</th><th scope="col">任教班级</th><th scope="col" class="num">人数</th><th scope="col" class="num">学业实力</th><th scope="col" class="num">相对进步率</th><th scope="col" class="num">校内排名</th></tr></thead>
+                <tbody>
+                  <tr><td>王老师</td><td>数学</td><td>1 班、3 班</td><td class="num">86</td><td class="num">64.2</td><td class="num">2.41</td><td class="num">1</td></tr>
+                  <tr><td>李老师</td><td>语文</td><td>2 班、4 班</td><td class="num">88</td><td class="num">61.8</td><td class="num">1.87</td><td class="num">3</td></tr>
+                  <tr><td>赵老师</td><td>物理</td><td>1 班、2 班</td><td class="num">54</td><td class="num">63.1</td><td class="num">2.05</td><td class="num">2</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="table-mark">示意数据 · 结果用于教学改进，不作为单一问责依据 · 小屏可左右滑动查看</div>
+          </div>
+        </div>
+
+        <!-- School -->
+        <div class="level-panel" id="panel-school" role="tabpanel" aria-labelledby="tab-school" hidden>
+          <div class="level-info">
+            <div class="level-kicker">SCHOOL</div>
+            <h3>识别真正的“低进高出”</h3>
+            <p>在联考全体内比较学校的净增值，而不是比谁的生源更好。指标与班级结果完全一致，口径统一、可解释。</p>
+            <ul class="check-list">
+              <li><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-check"/></svg>学业实力、保持值、进步值、退步值</li>
+              <li><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-check"/></svg>相对进步率、平均级数、进步占比</li>
+              <li><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-check"/></svg>实力排名与进步率排名（联考全体）</li>
+            </ul>
+            <div class="scope"><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-target"/></svg><span>排名范围：联考全体同科目；单校评价时，联考全体即本校全体。</span></div>
+          </div>
+          <div class="table-wrap">
+            <div class="table-scroll">
+              <table>
+                <thead><tr><th scope="col">学校</th><th scope="col" class="num">人数</th><th scope="col" class="num">学业实力</th><th scope="col" class="num">保持值</th><th scope="col" class="num">相对进步率</th><th scope="col" class="num">联考排名</th></tr></thead>
+                <tbody>
+                  <tr><td>A 校</td><td class="num">620</td><td class="num">63.8</td><td class="num">27.4</td><td class="num">2.08</td><td class="num">3</td></tr>
+                  <tr><td>B 校</td><td class="num">580</td><td class="num">66.2</td><td class="num">28.9</td><td class="num">1.86</td><td class="num">2</td></tr>
+                  <tr><td>C 校</td><td class="num">610</td><td class="num">64.5</td><td class="num">27.9</td><td class="num">2.21</td><td class="num">1</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="table-mark">示意数据 · 学校结果与班级结果指标一致 · 小屏可左右滑动查看</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST -->
+  <section class="section section--white" id="trust">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow">Trust</div>
+        <h2>每一个数字，都能点开看</h2>
+        <p class="lead">结果不是黑箱。从原始成绩到四层汇总，每一步的输入、口径和中间结果都保留在“计算过程”里；异常样本先列清楚，再谈指标。</p>
+      </div>
+
+      <div class="pipeline reveal" aria-label="计算链路">
+        <div class="pipe"><b>原始成绩</b><small>RAW</small></div>
+        <span class="pipe-arrow"><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-arrow"/></svg></span>
+        <div class="pipe"><b>赋分优先</b><small>GRADE</small></div>
+        <span class="pipe-arrow"><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-arrow"/></svg></span>
+        <div class="pipe"><b>联考均值 / 标准差</b><small>μ / σ</small></div>
+        <span class="pipe-arrow"><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-arrow"/></svg></span>
+        <div class="pipe"><b>标准分 z</b><small>NORMALIZE</small></div>
+        <span class="pipe-arrow"><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-arrow"/></svg></span>
+        <div class="pipe"><b>9 档等级</b><small>G1–G9</small></div>
+        <span class="pipe-arrow"><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-arrow"/></svg></span>
+        <div class="pipe"><b>进退步判定</b><small>Δz</small></div>
+        <span class="pipe-arrow"><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-arrow"/></svg></span>
+        <div class="pipe"><b>四层汇总</b><small>SUM</small></div>
+      </div>
+
+      <p class="pipeline-note reveal"><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-info"/></svg><span>逐条成绩优先使用高考赋分；赋分缺失时回退原始分，并在结果中标注。</span></p>
+
+      <div class="grid-4">
+        <article class="card trust-card reveal">
+          <div class="icon-tile"><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-layers"/></svg></div>
+          <h3>计算过程可下钻</h3>
+          <p>学生看原始分、采用方式、z、等级、判定与汇总贡献；班级看成员逐人贡献与公式代入，结果可复核。</p>
+        </article>
+        <article class="card trust-card reveal" style="--d:.06s">
+          <div class="icon-tile icon-tile--amber"><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-flow"/></svg></div>
+          <h3>异常样本先看清</h3>
+          <p>仅入口、仅评价、成绩不完整、外语语种变更、班级变更分别列清单，不混进正常样本再算指标。</p>
+        </article>
+        <article class="card trust-card reveal" style="--d:.12s">
+          <div class="icon-tile icon-tile--violet"><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-shield"/></svg></div>
+          <h3>口径与版本锁定</h3>
+          <p>参数、样本、结果在同一版本内一致；已完成任务保留自己的快照，重算生成新版本，历史结果不被改写。</p>
+        </article>
+        <article class="card trust-card reveal" style="--d:.18s">
+          <div class="icon-tile icon-tile--green"><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-book"/></svg></div>
+          <h3>算法公开可核</h3>
+          <p>提供脱敏的完整算法说明：9 档区间、权重、公式、边界规则与虚构示例，任何人拿到结果都能复核。</p>
+        </article>
+      </div>
+
+      <div class="trust-note reveal" style="--d:.12s">
+        <svg aria-hidden="true" focusable="false" class="icon"><use href="#i-lock"/></svg>
+        <span><b>数据范围按角色隔离。</b>系统管理员维护全局，学校管理员只读本校；重新导入成绩只覆盖对应学校，已完成评价任务的结果不会被自动改写。</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORKFLOW -->
+  <section class="section" id="workflow">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow">Workflow</div>
+        <h2>评价不是算一次分，而是一套能长期跑的流程</h2>
+        <p class="lead">换一届学生、补录一次成绩、调整一次参数，都不需要推翻重来。数据、口径和结果各自有版本，历史随时可追溯。</p>
+      </div>
+
+      <div class="flow-grid">
+        <article class="flow-card reveal">
+          <div class="step-no">STEP 01</div>
+          <h3>建基础数据</h3>
+          <p>学校、年级、班级、学生与教师；按实际年级保存只读版本，版本决定班级与任课归属。</p>
+          <span class="out"><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-check"/></svg>产出：可用数据版本</span>
+        </article>
+        <article class="flow-card reveal" style="--d:.05s">
+          <div class="step-no">STEP 02</div>
+          <h3>组两场联考</h3>
+          <p>选择学段、年级层次与参与学校，系统自动带出各校实际年级与最新已保存版本。</p>
+          <span class="out"><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-check"/></svg>产出：入口 / 评价考试</span>
+        </article>
+        <article class="flow-card reveal" style="--d:.1s">
+          <div class="step-no">STEP 03</div>
+          <h3>导入成绩</h3>
+          <p>只导成绩单；解析后逐条确认差异，按学校覆盖，未涉及学校不受影响。</p>
+          <span class="out"><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-check"/></svg>产出：两场可比成绩</span>
+        </article>
+        <article class="flow-card reveal" style="--d:.15s">
+          <div class="step-no">STEP 04</div>
+          <h3>配置评价任务</h3>
+          <p>指定入口考试、评价考试、每校版本与逐科口径；两场考试学校不一致时只算共同学校。</p>
+          <span class="out"><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-check"/></svg>产出：任务与样本</span>
+        </article>
+        <article class="flow-card reveal" style="--d:.2s">
+          <div class="step-no">STEP 05</div>
+          <h3>匹配与确认</h3>
+          <p>学籍号优先匹配，身份证号兜底；阻断项清零后才允许计算，单边学校进入异常清单。</p>
+          <span class="out"><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-check"/></svg>产出：干净的可算样本</span>
+        </article>
+        <article class="flow-card reveal" style="--d:.25s">
+          <div class="step-no">STEP 06</div>
+          <h3>计算与追溯</h3>
+          <p>输出四层结果；重算生成新的结果版本，旧结果保留，参数、样本、结果始终对得上。</p>
+          <span class="out"><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-check"/></svg>产出：结果 + 计算过程</span>
+        </article>
+      </div>
+
+      <div class="chips reveal" style="--d:.1s">
+        <span class="chip"><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-check"/></svg>换一届不用重建</span>
+        <span class="chip"><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-check"/></svg>补成绩不改历史</span>
+        <span class="chip"><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-check"/></svg>调参数可复算</span>
+        <span class="chip"><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-check"/></svg>每一步有记录</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCENARIOS -->
+  <section class="section section--white" id="scenarios">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow">Scenarios</div>
+        <h2>不是为某几所学校定制的系统</h2>
+        <p class="lead">学校数量、学段与考试场次都可扩展；科目按学段内置。几所学校能跑，几十所也能跑；区域能做，集团能做，单校也能做。</p>
+      </div>
+
+      <div class="grid-3">
+        <article class="card scenario-card reveal">
+          <div class="icon-tile"><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-school"/></svg></div>
+          <h3>区域教育局 / 教科院</h3>
+          <p>统一联考口径，跨校看“入口—出口”的净变化；识别真正实现低进高出的学校与学科，为资源投放、教研和考核提供依据。</p>
+          <div class="tags"><span class="tag">多校联考</span><span class="tag">跨校比较</span><span class="tag">区域教研</span></div>
+        </article>
+        <article class="card scenario-card reveal" style="--d:.08s">
+          <div class="icon-tile icon-tile--violet"><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-layers"/></svg></div>
+          <h3>教育集团 / 多校联盟</h3>
+          <p>校区之间用同一把尺子；把一所学校的有效做法，变成集团可复制的经验；避免“生源好 = 质量高”的误判。</p>
+          <div class="tags"><span class="tag">集团办学</span><span class="tag">经验复制</span><span class="tag">统一评价</span></div>
+        </article>
+        <article class="card scenario-card reveal" style="--d:.16s">
+          <div class="icon-tile icon-tile--green"><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-users"/></svg></div>
+          <h3>单校 / 年级组</h3>
+          <p>单校评价是多校联考的特例；在校内看班级、教师、学科的增量，把评价结果直接带回教研现场。</p>
+          <div class="tags"><span class="tag">校内评价</span><span class="tag">班级对比</span><span class="tag">学科教研</span></div>
+        </article>
+      </div>
+
+      <div class="scenario-note reveal" style="--d:.1s">
+        <svg aria-hidden="true" focusable="false" class="icon"><use href="#i-info"/></svg>
+        <span>支持高中与初中；科目按学段内置（高中含英语、日语、俄语，三选一）；一次评价任务对应入口与评价两场考试，不同阶段可分别建任务。系统不绑定学校数量、不绑定区域、不绑定具体校名。</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROLES -->
+  <section class="section" id="roles">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow">For Every Role</div>
+        <h2>不同角色，看到不同的答案</h2>
+        <p class="lead">评价结果只有落到具体的人和工作上，才会产生价值。四层结果对应四类问题，也对应四种行动。</p>
+      </div>
+
+      <div class="grid-4">
+        <article class="card role-card reveal">
+          <div class="role-head"><span class="role-avatar">区</span><b>区域管理者</b></div>
+          <p class="q">哪些学校在净进步？哪些学科需要支持？</p>
+          <p class="a">看学校结果与联考排名，按学科查看；把资源投向真正产生增量的地方。</p>
+        </article>
+        <article class="card role-card reveal" style="--d:.06s">
+          <div class="role-head"><span class="role-avatar">校</span><b>校长</b></div>
+          <p class="q">本校的增量来自哪个年级、学科、班级？</p>
+          <p class="a">对照学校、班级、教师三层结果，定位优势与短板，形成校本改进清单。</p>
+        </article>
+        <article class="card role-card reveal" style="--d:.12s">
+          <div class="role-head"><span class="role-avatar">年</span><b>年级主任</b></div>
+          <p class="q">哪个班、哪一科需要教研支持？</p>
+          <p class="a">看班级结果与教师结果，结合样本量判断，把教研排到最需要的地方。</p>
+        </article>
+        <article class="card role-card reveal" style="--d:.18s">
+          <div class="role-head"><span class="role-avatar">师</span><b>班主任 / 教师</b></div>
+          <p class="q">我带的这批学生，谁进步、谁退步、退在哪一科？</p>
+          <p class="a">看学生结果并切换科目，找到具体学生与具体学科，做有针对性的辅导。</p>
+        </article>
+      </div>
+
+      <div class="principle reveal" style="--d:.1s">
+        <svg aria-hidden="true" focusable="false" class="icon"><use href="#i-shield"/></svg>
+        <span><b>评价用于改进，不用于简单问责。</b>结果应结合生源、选科、任教时间、样本量与教学过程共同解读；人数少于 8 人的班级或教师只展示指标、不参与排名，避免小样本误伤。</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROADMAP -->
+  <section class="section section--dark" id="roadmap">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow">Roadmap</div>
+        <h2>现在能用的，和正在建设的</h2>
+        <p class="lead">当前版本把“算得准、看得懂、可追溯”做扎实；以下能力正在建设中，将按版本逐步开放。</p>
+      </div>
+
+      <div class="roadmap-grid">
+        <div class="current-box reveal">
+          <h3><span class="status-dot"></span>当前版本已可用</h3>
+          <ul class="current-list">
+            <li><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-check"/></svg><span><b>多校联考标准化</b>与四层结果（学生 / 班级 / 教师 / 学校）</span></li>
+            <li><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-check"/></svg><span>结果表<b>筛选、分页与 CSV 导出</b>，按科目切换</span></li>
+            <li><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-check"/></svg><span><b>计算过程全链路</b>：数据口径、联考统计、学生标准化、等级判定、四层汇总</span></li>
+            <li><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-check"/></svg><span><b>异常样本清单</b>：正常样本、学生异常、成绩异常分开呈现</span></li>
+            <li><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-check"/></svg><span><b>版本与参数</b>：年级版本、结果版本、9 档默认参数与自定义档位</span></li>
+            <li><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-check"/></svg><span><b>公开算法说明</b>：脱敏、可复核，含虚构学生与班级完整示例</span></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="roadmap-cards">
+            <article class="roadmap-card reveal">
+              <span class="soon">建设中</span>
+              <h4>增值报告与图表</h4>
+              <p>学校、年级、学科一页式解读，把结果表变成可汇报、可讨论的结论。</p>
+            </article>
+            <article class="roadmap-card reveal" style="--d:.06s">
+              <span class="soon">建设中</span>
+              <h4>多次考试趋势</h4>
+              <p>三次以上考试的位置轨迹，区分一次性波动与持续变化。</p>
+            </article>
+            <article class="roadmap-card reveal" style="--d:.12s">
+              <span class="soon">建设中</span>
+              <h4>学生成长档案</h4>
+              <p>个人增值轨迹、学科画像与临界生提醒，支撑个性化辅导。</p>
+            </article>
+            <article class="roadmap-card reveal" style="--d:.18s">
+              <span class="soon">建设中</span>
+              <h4>区域 / 集团看板</h4>
+              <p>总览、对比与预警，支持多层级查看与教研调度。</p>
+            </article>
+          </div>
+          <div class="roadmap-note reveal" style="--d:.2s">
+            <svg aria-hidden="true" focusable="false" class="icon"><use href="#i-info"/></svg>
+            <span>建设内容以正式发布版本为准。当前版本聚焦四层结果与计算过程，先把口径和可追溯性做扎实。</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GET STARTED -->
+  <section class="section" id="start">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow">Get Started</div>
+        <h2>三步，跑通第一次评价</h2>
+        <p class="lead">不改变现有考试组织方式。只要有两场可比成绩和一份学生名册，就能先跑通学生与学校层；补齐任课信息后，教师层结果同样可用。</p>
+      </div>
+
+      <div class="do-grid">
+        <article class="do-card reveal">
+          <span class="big">01</span>
+          <div class="step-no">PREPARE</div>
+          <h3>准备数据</h3>
+          <p>学校、年级、班级、学生、教师与任课信息；按实际年级保存为只读版本。</p>
+          <span class="out"><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-check"/></svg>产出：基础数据版本</span>
+        </article>
+        <article class="do-card reveal" style="--d:.08s">
+          <span class="big">02</span>
+          <div class="step-no">ORGANIZE</div>
+          <h3>组织联考</h3>
+          <p>确定入口与评价两场考试，按学校导入成绩，逐条确认差异后入库。</p>
+          <span class="out"><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-check"/></svg>产出：两场可比成绩</span>
+        </article>
+        <article class="do-card reveal" style="--d:.16s">
+          <span class="big">03</span>
+          <div class="step-no">CALCULATE</div>
+          <h3>生成结果</h3>
+          <p>新建评价任务，确认匹配、选择口径与参数，计算并查看四层结果。</p>
+          <span class="out"><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-check"/></svg>产出：四层结果与计算过程</span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section section--white" id="faq">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow">FAQ</div>
+        <h2>常见问题</h2>
+        <p class="lead">关于适用范围、口径与使用边界的几个关键问题。</p>
+      </div>
+
+      <div class="faq-list reveal">
+        <details class="faq-item" open>
+          <summary>只有一所学校，能用吗？</summary>
+          <div class="faq-a">能。单校评价是多校联考的特例，此时联考全体就是本校全体；校内班级与教师比较仍然成立，学校层结果也可用于跨届的纵向观察。</div>
+        </details>
+        <details class="faq-item">
+          <summary>学校数量有上限吗？</summary>
+          <div class="faq-a">系统按学校配置，不写死数量。联考规模取决于组织范围与数据质量，而不是产品上限；新增学校、年级和班级都通过配置与导入完成，不需要改代码。</div>
+        </details>
+        <details class="faq-item">
+          <summary>两次考试难度不同，怎么保证可比？</summary>
+          <div class="faq-a">不比绝对分，而比两次考试在联考全体中的标准分位置。难度变化会同时影响均值和标准差，标准分把这种整体位移抵消掉——这也是增值评价要解决的核心问题。</div>
+        </details>
+        <details class="faq-item">
+          <summary>学生分数涨了，为什么还会判退步？</summary>
+          <div class="faq-a">因为参照系也变了。示例：入口 80 分（联考均值 75，σ=10），<code>z=0.50</code>；评价 90 分（均值 88，σ=10），<code>z=0.20</code>；<code>Δz=−0.30</code>，超过 −0.25 阈值，判退步 1 级。<b>看的是相对位置，不是分数本身。</b></div>
+        </details>
+        <details class="faq-item">
+          <summary>结果会不会变成对教师的排名问责？</summary>
+          <div class="faq-a">系统提供的是证据，不是结论。建议结合生源、选科、任教时间与样本量解读；人数少于 8 人的班级/教师不参与排名，避免小样本误伤。评价的价值在于改进教学，而不是制造新的排名压力。</div>
+        </details>
+        <details class="faq-item">
+          <summary>需要准备哪些数据？</summary>
+          <div class="faq-a">两场考试的成绩单，以及包含班级、选科、外语语种的学生名册。高考赋分由外部提供，有则优先使用；缺失时逐条回退原始分并在结果中标注，不阻断计算。</div>
+        </details>
+        <details class="faq-item">
+          <summary>调整参数后，历史结果会变吗？</summary>
+          <div class="faq-a">不会。参数只影响新建任务；对已完成任务重算，会生成新的结果版本，旧版本保留可追溯。不同档位、不同参数的结果不能直接比较。</div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section" id="cta">
+    <div class="container">
+      <div class="cta-card reveal">
+        <div class="cta-kicker">VALUE-ADDED EVALUATION</div>
+        <h2>让下一次评价，<br class="br-m">从看见成长开始</h2>
+        <p>不改变考试，不增加负担。把已经发生的“入口—出口”变化，算清楚、说明白，再带回教研现场。</p>
+        <div class="cta-actions">
+          <a class="btn btn-white" href="#method">回顾评价逻辑<svg aria-hidden="true" focusable="false" class="icon"><use href="#i-arrow"/></svg></a>
+          <a class="btn btn-ghost" href="#scenarios">查看适用场景</a>
+        </div>
+        <div class="cta-foot">本页为产品价值介绍，所有学生、班级、学校与分数均为示意。</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand-col">
+        <div class="footer-brand">
+          <span class="brand-mark">VE</span>
+          <span class="brand-text">
+            <b>成绩增值评价系统</b>
+            <span>VALUE-ADDED EVALUATION</span>
+          </span>
+        </div>
+        <p class="footer-desc">面向区域联考、教育集团与单校的增值评价工具：统一口径、四层结果、全链路可追溯。评价用于改进教学，而非简单排名。</p>
+      </div>
+      <div>
+        <h4>页面导航</h4>
+        <div class="footer-links">
+          <a href="#problem">为什么</a>
+          <a href="#method">怎么算</a>
+          <a href="#levels">四层结果</a>
+          <a href="#trust">可信</a>
+          <a href="#scenarios">适用场景</a>
+          <a href="#roadmap">规划</a>
+          <a href="#faq">常见问题</a>
+          <a href="#top">回到顶部</a>
+        </div>
+      </div>
+      <div>
+        <h4>说明</h4>
+        <div class="footer-meta">
+          <span class="v">v3.1</span><br>
+          多校联考增值评价<br>
+          学校数量、学段与考试场次可扩展<br>
+          本页数据均为示意，不对应任何真实学校或个人
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 成绩增值评价系统</span>
+      <span><svg aria-hidden="true" focusable="false" class="icon"><use href="#i-lock"/></svg>评价用于改进 · 结果需结合情境解读</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/core/accounts.js"></script>
+<script>
+(function () {
+  'use strict';
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Progress + nav state */
+  var nav = document.getElementById('nav');
+  var progress = document.getElementById('progress');
+  var ticking = false;
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll('.nav-link'));
+  var sections = navLinks.map(function (link) {
+    return document.querySelector(link.getAttribute('href'));
+  }).filter(Boolean);
+
+  function updateActive(y) {
+    if (!sections.length) return;
+    var probe = y + 130;
+    var current = '';
+    sections.forEach(function (section) {
+      if (section.offsetTop <= probe) current = '#' + section.id;
+    });
+    if (window.innerHeight + y >= document.documentElement.scrollHeight - 30) current = '';
+    navLinks.forEach(function (link) {
+      link.classList.toggle('active', link.getAttribute('href') === current);
+    });
+  }
+
+  function onScroll() {
+    var y = window.scrollY || window.pageYOffset;
+    if (nav) nav.classList.toggle('scrolled', y > 24);
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - window.innerHeight;
+    if (progress) progress.style.transform = 'scaleX(' + (max > 0 ? Math.min(y / max, 1) : 0) + ')';
+    updateActive(y);
+    ticking = false;
+  }
+  function requestScroll() {
+    if (!ticking) {
+      ticking = true;
+      window.requestAnimationFrame(onScroll);
+    }
+  }
+  window.addEventListener('scroll', requestScroll, { passive: true });
+  window.addEventListener('resize', requestScroll);
+  onScroll();
+
+  /* Reveal on scroll */
+  var reveals = Array.prototype.slice.call(document.querySelectorAll('.reveal'));
+  if (reduceMotion || !('IntersectionObserver' in window)) {
+    reveals.forEach(function (el) { el.classList.add('is-visible'); });
+  } else {
+    var revealObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+    reveals.forEach(function (el) { revealObserver.observe(el); });
+  }
+
+  /* Mobile menu */
+  var toggle = document.getElementById('navToggle');
+  var menu = document.getElementById('mobileMenu');
+
+  function closeMenu() {
+    if (!menu || !toggle) return;
+    menu.classList.remove('open');
+    toggle.classList.remove('is-open');
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-label', '打开菜单');
+    document.body.classList.remove('menu-open');
+  }
+  function openMenu() {
+    if (!menu || !toggle) return;
+    menu.classList.add('open');
+    toggle.classList.add('is-open');
+    toggle.setAttribute('aria-expanded', 'true');
+    toggle.setAttribute('aria-label', '关闭菜单');
+    document.body.classList.add('menu-open');
+  }
+  if (toggle && menu) {
+    toggle.addEventListener('click', function () {
+      if (menu.classList.contains('open')) closeMenu(); else openMenu();
+    });
+    menu.addEventListener('click', function (event) {
+      if (event.target.closest('a')) closeMenu();
+    });
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape') closeMenu();
+    });
+    window.addEventListener('resize', function () {
+      if (window.innerWidth > 1120) closeMenu();
+    });
+  }
+
+  /* Tabs */
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab-btn'));
+
+  function activateTab(button) {
+    tabs.forEach(function (tab) {
+      var selected = tab === button;
+      tab.setAttribute('aria-selected', selected ? 'true' : 'false');
+      tab.tabIndex = selected ? 0 : -1;
+      var panel = document.getElementById(tab.getAttribute('aria-controls'));
+      if (panel) {
+        panel.hidden = !selected;
+        if (selected) {
+          Array.prototype.forEach.call(panel.querySelectorAll('.reveal'), function (el) {
+            el.classList.add('is-visible');
+          });
+        }
+      }
+    });
+  }
+  tabs.forEach(function (button) {
+    button.addEventListener('click', function () { activateTab(button); });
+    button.addEventListener('keydown', function (event) {
+      if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') return;
+      event.preventDefault();
+      var index = tabs.indexOf(button);
+      var next = tabs[(index + (event.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length];
+      next.focus();
+      activateTab(next);
+    });
+  });
+})();
+</script>
+<script>
+(function () {
+  'use strict';
+  var form = document.getElementById('homeLogin');
+  if (!form) return;
+  var username = document.getElementById('homeUsername');
+  var password = document.getElementById('homePassword');
+  var button = document.getElementById('homeLoginBtn');
+  var error = document.getElementById('homeLoginError');
+
+  function showError(message) {
+    if (!error) return;
+    error.textContent = message;
+    error.hidden = false;
+  }
+  function clearError() {
+    if (!error) return;
+    error.hidden = true;
+    error.textContent = '';
+  }
+
+  [username, password].forEach(function (input) {
+    if (input) input.addEventListener('input', clearError);
+  });
+
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+    clearError();
+    var user = username ? String(username.value || '').trim() : '';
+    var pass = password ? String(password.value || '') : '';
+    if (!user || !pass) {
+      showError('请输入用户名和密码');
+      if (!user && username) username.focus();
+      else if (password) password.focus();
+      return;
+    }
+    var auth = window.VE_AUTH;
+    if (!auth) {
+      showError('登录组件未加载，请刷新页面重试');
+      return;
+    }
+    var account = auth.check(user, pass);
+    if (!account) {
+      showError('账号或密码错误');
+      if (password) {
+        password.value = '';
+        password.focus();
+      }
+      return;
+    }
+    if (!auth.remember(account)) {
+      showError('无法保存登录状态，请检查浏览器设置');
+      return;
+    }
+    if (button) {
+      button.disabled = true;
+      button.textContent = '登录中…';
+    }
+    window.location.href = 'app.html' + (account.role === 'admin' ? '#/basic' : '#/exams');
+  });
+})();
+</script>
+</body>
+</html>

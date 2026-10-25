@@ -1,0 +1,97 @@
+{
+  "errors": [],
+  "log": [
+    {
+      "name": "01-login.png",
+      "title": "登录 · 成绩增值评价系统"
+    },
+    {
+      "name": "02-schools.png",
+      "title": "学校管理"
+    },
+    {
+      "name": "03-basic.png",
+      "title": "基础数据"
+    },
+    {
+      "name": "04-basic-detail.png",
+      "title": "基础数据"
+    },
+    {
+      "name": "05-exams.png",
+      "title": "考试管理"
+    },
+    {
+      "name": "06-exam-detail.png",
+      "title": "2024级高三联考（评价）"
+    },
+    {
+      "name": "07-exam-scroll.png",
+      "title": "2024级高三联考（评价）"
+    },
+    {
+      "name": "08-evaluations.png",
+      "title": "评价任务"
+    },
+    {
+      "name": "09-eval-config.png",
+      "title": "配置评价任务"
+    },
+    {
+      "name": "10-results.png",
+      "title": "高中园四校增值评价（高二期末 → 高三）"
+    },
+    {
+      "name": "11-results-classes.png",
+      "title": "高中园四校增值评价（高二期末 → 高三）"
+    },
+    {
+      "name": "12-modal.png",
+      "title": "高中园四校增值评价（高二期末 → 高三）"
+    },
+    {
+      "name": "13-process.png",
+      "title": "高中园四校增值评价（高二期末 → 高三） · 计算过程"
+    },
+    {
+      "name": "14-reports.png",
+      "title": "选择报告视角"
+    },
+    {
+      "name": "15-report-principal.png",
+      "title": "博雅高中增值报告"
+    },
+    {
+      "name": "16-settings.png",
+      "title": "参数配置"
+    },
+    {
+      "name": "17-settings-ruler.png",
+      "title": "参数配置"
+    },
+    {
+      "name": "18-algorithm.png",
+      "title": "增值评价算法说明"
+    },
+    {
+      "name": "19-algorithm-public.png",
+      "title": "成绩增值评价系统 · 算法说明（公开版）"
+    },
+    {
+      "name": "20-school-admin.png",
+      "title": "考试管理"
+    },
+    {
+      "name": "21-results-1280.png",
+      "title": "高中园四校增值评价（高二期末 → 高三）"
+    },
+    {
+      "name": "22-print-report.png",
+      "title": "博雅高中增值报告"
+    },
+    {
+      "name": "23-results-lower.png",
+      "title": "高中园四校增值评价（高二期末 → 高三）"
+    }
+  ]
+}

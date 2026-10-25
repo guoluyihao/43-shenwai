@@ -1,0 +1,64 @@
+# === AutoGitSync 基础忽略规则（首次创建时写入，可自行增删） ===
+# 依赖 / 缓存
+node_modules/
+.npm/
+.pnpm-store/
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.conda/
+.tox/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.idea/
+.vscode/
+*.egg-info/
+dist/
+build/
+target/
+bin/Debug/
+bin/Release/
+obj/
+.gradle/
+.next/
+.nuxt/
+.turbo/
+coverage/
+.cache/
+# 日志 / 临时
+*.log
+logs/
+tmp/
+temp/
+*.tmp
+*.bak
+*.swp
+# 密钥 / 环境变量（防止误传）
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+secrets.json
+# 大文件 / 产物
+*.zip
+*.7z
+*.rar
+*.iso
+*.exe
+*.dll
+*.msi
+*.mp4
+*.mov
+*.psd
+# 系统
+.DS_Store
+Thumbs.db
+desktop.ini
+# AutoGitSync 生成的 zip 快照（保留最近几份在云端，历史版本由 git 负责）
+_autogitsync_archives/
+# === 以上为默认规则，以下可追加你的规则 ===
