@@ -15,11 +15,11 @@
     const root = document.getElementById('app');
     if (!App.state.role) { window.location.replace('index.html'); return; }
     if (parts[0] === 'login') {
-      location.hash = App.canEdit() ? '#/basic' : '#/exams';
+      location.hash = App.canEdit() ? '#/basic' : '#/evaluations';
       return;
     }
     if (App.isSchool() && ['exams', 'evaluations', 'algorithm'].indexOf(parts[0]) === -1) {
-      location.hash = '#/exams';
+      location.hash = '#/evaluations';
       return;
     }
 
@@ -35,6 +35,7 @@
 
     root.innerHTML = UI.layout(content, parts[0]);
     UI.closeModal();
+    if (typeof App.afterRender === 'function') App.afterRender();
   };
 
   document.addEventListener('click', function (e) {
@@ -48,3 +49,4 @@
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') UI.closeModal(); });
   window.addEventListener('hashchange', function () { App.render(); window.scrollTo({ top: 0, behavior: 'auto' }); });
 })();
+

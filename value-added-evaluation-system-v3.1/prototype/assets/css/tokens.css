@@ -1,75 +1,124 @@
-/* v3.2 设计变量：与首页 index.html 同一套浅色、克制的视觉 token */
+/* v3.3 设计变量：数据分析报告式视觉系统
+   纸面阅读为主，深色只用于封面/登录首屏；科技感来自刻度、等宽数字与克制的电光蓝。 */
 :root {
-  /* ---- 品牌色 ---- */
-  --primary: #0a66ff;
-  --primary-hover: #084fd0;
-  --primary-deep: #084fd0;
-  --primary-light: #f2f7ff;
-  --primary-glow: rgba(10, 102, 255, 0.10);
-  --blue: #0a66ff;
-  --cyan: #38bdf8;
-  --violet: #6d28d9;
-  --navy: #0f172a;
-  --navy-2: #1e293b;
-  --navy-3: #334155;
+  /* ---- 品牌与强调 ---- */
+  --primary: #1f4fd8;
+  --primary-hover: #1a43be;
+  --primary-deep: #102f8f;
+  --primary-light: #eef3ff;
+  --primary-glow: rgba(31, 79, 216, 0.14);
+  --accent: #0e93b0;
+  --accent-light: #ecfbfe;
+  --accent-glow: rgba(14, 147, 176, 0.16);
+  --blue: #1f4fd8;
+  --cyan: #0e93b0;
+  --violet: #5b3fc4;
+  --navy: #0a1220;
+  --navy-2: #121e33;
+  --navy-3: #223350;
 
   /* ---- 文字 ---- */
-  --ink: #0f172a;
-  --ink-2: #1e293b;
-  --text: #0f172a;
-  --text-1: #0f172a;
-  --text-2: #334155;
-  --body: #334155;
-  --text-3: #7b8798;
-  --muted: #64748b;
-  --faint: #7b8798;
+  --ink: #0a1220;
+  --ink-2: #18233a;
+  --text: #16202e;
+  --text-1: #0a1220;
+  --text-2: #22304a;
+  --body: #22304a;
+  --muted: #45566e;
+  --text-3: #5b6c84;
+  --faint: #5b6c84;
 
-  /* ---- 表面 ---- */
-  --bg: #f7f9fc;
+  /* ---- 纸面 ---- */
+  --bg: #fbfcfe;
+  --paper: #fbfcfe;
+  --paper-2: #f6f8fc;
   --surface: #ffffff;
-  --surface-2: #f8fafc;
-  --surface-3: #f1f5f9;
-  --surface-glass: rgba(255, 255, 255, 0.94);
-  --border: #e5e7eb;
-  --line: #e5e7eb;
-  --line-2: #eef2f7;
-  --border-strong: #d1d5db;
+  --surface-2: #f7f9fd;
+  --surface-3: #eef2f8;
+  --surface-glass: rgba(255, 255, 255, 0.86);
+  --border: #e2e9f2;
+  --border-strong: #d3dded;
+  --line: #e4eaf3;
+  --line-2: #eef2f8;
+  --line-strong: #d3dded;
 
-  /* ---- 语义色 ---- */
-  --success: #047857;
-  --success-bg: #ecfdf5;
-  --warning: #b45309;
-  --warning-bg: #fffbeb;
-  --danger: #b91c1c;
-  --danger-bg: #fef2f2;
-  --info: #0a66ff;
-  --info-bg: #f2f7ff;
-  --purple: #6d28d9;
+  /* ---- 语义色（低饱和、可打印） ---- */
+  --success: #0f766e;
+  --success-bg: #effaf6;
+  --success-line: #cdebdf;
+  --warning: #a85a05;
+  --warning-bg: #fff8eb;
+  --warning-line: #f2dfb8;
+  --danger: #a8261b;
+  --danger-bg: #fdf2f0;
+  --danger-line: #f2cdc8;
+  --info: #1f4fd8;
+  --info-bg: #eef3ff;
+  --purple: #5b3fc4;
+  --purple-bg: #f3f0ff;
+  --purple-line: #e2dbfa;
 
-  /* ---- 阴影（克制，只保留必要层级） ---- */
-  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.03);
-  --shadow-1: 0 1px 2px rgba(16, 24, 40, 0.03);
-  --shadow-2: 0 8px 24px rgba(16, 24, 40, 0.05);
-  --shadow-md: 0 8px 24px rgba(16, 24, 40, 0.05);
-  --shadow-3: 0 24px 48px rgba(15, 23, 42, 0.12);
-  --shadow-lg: 0 24px 48px rgba(15, 23, 42, 0.12);
+  /* ---- 图表序列 ---- */
+  --chart-1: #1f4fd8;
+  --chart-2: #0e93b0;
+  --chart-3: #5b3fc4;
+  --chart-4: #a85a05;
+  --chart-5: #0f766e;
+  --chart-6: #64748b;
+  --chart-grid: #edf1f8;
+  --chart-axis: #6f7f95;
 
-  /* ---- 圆角 ---- */
-  --radius-xs: 6px;
-  --radius-sm: 8px;
-  --radius-md: 10px;
-  --radius-lg: 12px;
-  --radius-xl: 14px;
-  --radius-2xl: 16px;
+  /* ---- 深色封面（仅封面/登录/报告头） ---- */
+  --cover: #070d18;
+  --cover-2: #0b1526;
+  --cover-3: #101d31;
+  --cover-text: #e9effa;
+  --cover-muted: #93a5bf;
+  --cover-faint: #6f819c;
+  --cover-line: rgba(128, 174, 255, 0.16);
+  --cover-accent: #38bdf8;
+
+  /* ---- 阴影（纸面层级） ---- */
+  --shadow-sm: 0 1px 2px rgba(10, 18, 32, 0.04);
+  --shadow-1: 0 1px 2px rgba(10, 18, 32, 0.04);
+  --shadow-2: 0 10px 28px rgba(10, 18, 32, 0.06);
+  --shadow-md: 0 10px 28px rgba(10, 18, 32, 0.06);
+  --shadow-3: 0 28px 64px rgba(7, 13, 24, 0.18);
+  --shadow-lg: 0 28px 64px rgba(7, 13, 24, 0.18);
+
+  /* ---- 圆角（小而精确） ---- */
+  --radius-xs: 3px;
+  --radius-sm: 5px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-xl: 12px;
+  --radius-2xl: 14px;
   --radius-pill: 999px;
 
   /* ---- 字体 ---- */
-  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
-  --mono: "SFMono-Regular", "Cascadia Code", "JetBrains Mono", Consolas, "Liberation Mono", monospace;
-  --font-size: 14px;
+  --font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  --mono: "JetBrains Mono", "Cascadia Code", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --font-size: calc(14px * 1.3);
 
   /* ---- 布局 ---- */
   --header-h: 64px;
-  --sidebar-w: 236px;
-  --content-max: 1480px;
+  --sidebar-w: 232px;
+  --content-max: 1320px;
+}
+
+/* 深色封面作用域：在深色区域内部覆盖纸面变量，组件可复用 */
+.cover-scope {
+  --surface: rgba(255, 255, 255, 0.04);
+  --surface-2: rgba(255, 255, 255, 0.06);
+  --surface-3: rgba(255, 255, 255, 0.09);
+  --text: var(--cover-text);
+  --text-1: var(--cover-text);
+  --text-2: #c6d3e6;
+  --muted: var(--cover-muted);
+  --faint: var(--cover-faint);
+  --line: var(--cover-line);
+  --line-2: rgba(128, 174, 255, 0.1);
+  --border: var(--cover-line);
+  --primary-light: rgba(56, 189, 248, 0.1);
+  --primary: var(--cover-accent);
 }

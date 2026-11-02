@@ -35,7 +35,7 @@
       <div class="page-head"><div><div class="breadcrumb"><span>管理</span><span class="sep">/</span><span>基础数据</span><span class="sep">/</span><span>导入更新</span></div><h1 class="page-title">导入更新</h1><div class="page-desc">基础数据维护</div></div></div>
       <div class="card"><div class="card-body" style="padding:40px;text-align:center">
         <div class="empty-icon">◌</div>
-        <div style="font-size:18px;font-weight:700">数据已入库</div>
+        <div style="font-size: calc(18px * 1.3);font-weight:700">数据已入库</div>
         <div class="muted small mt-8">基础数据与成绩数据已导入，可在基础数据与考试详情中查看。</div>
         <div class="mt-16"><button class="btn" data-action="backBasicSchools">返回学校列表</button></div>
       </div></div>
@@ -56,7 +56,7 @@
       <div class="grid grid-3">
         ${schools.map((s) => `<div class="card" style="cursor:pointer" data-action="openBasicSchool" data-id="${s.id}">
           <div class="card-body">
-            <div class="flex items-start justify-between gap-8"><div><div class="card-title" style="font-size:16px">${App.esc(s.name)}</div><div class="card-sub">${App.esc(s.city || '')} · ${App.esc(s.code)}</div></div>${UI.badge(s.enabled ? '启用' : '停用', s.enabled ? 'green' : 'gray')}</div>
+            <div class="flex items-start justify-between gap-8"><div><div class="card-title" style="font-size: calc(16px * 1.3)">${App.esc(s.name)}</div><div class="card-sub">${App.esc(s.city || '')} · ${App.esc(s.code)}</div></div>${UI.badge(s.enabled ? '启用' : '停用', s.enabled ? 'green' : 'gray')}</div>
             <div class="grid grid-3 mt-16">
               <div><div class="tiny weak">年级</div><div class="strong">${s.grades.length}</div></div>
               <div><div class="tiny weak">班级</div><div class="strong">${s.classCount}</div></div>
@@ -79,7 +79,7 @@
         return `<div class="card" style="cursor:pointer" data-action="openGrade" data-id="${g.id}">
           <div class="card-body">
             <div class="flex items-start justify-between gap-8">
-              <div><div class="card-title" style="font-size:16px">${App.esc(g.name)}</div><div class="card-sub">${App.esc(g.stage)} · ${App.esc(g.gradeLevel || '')} · ${App.esc(App.schoolName(g.schoolId))}</div></div>
+              <div><div class="card-title" style="font-size: calc(16px * 1.3)">${App.esc(g.name)}</div><div class="card-sub">${App.esc(g.stage)} · ${App.esc(g.gradeLevel || '')} · ${App.esc(App.schoolName(g.schoolId))}</div></div>
               ${g.dirty ? UI.badge('有未保存修改', 'amber') : UI.badge('已保存', 'green')}
             </div>
             <div class="grid grid-3 mt-16">
@@ -236,7 +236,7 @@
       wide: true,
       body: `<div class="grid grid-2 mb-16">
         <div class="card"><div class="card-body">${UI.kv([['班主任', (App.teacher(c.homeroomTeacherId) || {}).name || '—'], ['班级人数', students.length + ' 人'], ['实际年级', App.gradeName(c.gradeId)], ['所属学校', App.schoolName(c.schoolId)]])}</div></div>
-        <div class="card"><div class="card-body"><div class="card-title mb-8" style="font-size:13px">科任老师</div><div class="chips">${teachers.map((t) => `<span class="badge badge-gray">${t.subject} · ${t.name}</span>`).join('')}</div></div></div>
+        <div class="card"><div class="card-body"><div class="card-title mb-8" style="font-size: calc(13px * 1.3)">科任老师</div><div class="chips">${teachers.map((t) => `<span class="badge badge-gray">${t.subject} · ${t.name}</span>`).join('')}</div></div></div>
       </div>
       <div class="card-title mb-8">学生名单</div>
       ${UI.table({
@@ -372,7 +372,7 @@
     const accepted = b.accepted || {};
     const left = BM.DIFFS.filter((d) => d.level === 'block' && !accepted[d.id]).length;
     return `<div class="card"><div class="card-head"><div><div class="card-title"><span class="dot"></span>第三步：差异确认</div><div class="card-sub">阻断项清零后更新；更新前确认是否存为新版本</div></div><span class="badge ${left ? 'badge-red' : 'badge-green'}">${left ? left + ' 项阻断' : '阻断已清零'}</span></div><div class="card-body">
-      <div class="grid grid-2 mb-16"><div class="card"><div class="card-head"><div><div class="card-title" style="font-size:13px">学生名单预览</div></div></div>${UI.table({ columns: [ { key: 'no', label: '学号', render: (r) => `<span class="code">${r.no}</span>` }, { key: 'name', label: '姓名', render: (r) => r.conf < 0.8 ? `<input class="cell-input" value="${App.esc(r.name)}" onchange="App.editBasicCell('${r.no}','name',this.value)" />` : App.esc(r.name) }, { key: 'className', label: '班级' }, { key: 'selection', label: '选科' } ], rows: BM.STUDENT_ROWS })}</div><div class="card"><div class="card-head"><div><div class="card-title" style="font-size:13px">差异清单</div></div></div><div class="card-body" style="max-height:320px;overflow:auto"><div class="diff-list">${BM.DIFFS.map((d) => { const done = !!accepted[d.id]; return `<div class="diff-item ${done ? 'done' : ''}"><span class="diff-level ${d.level}">${d.level === 'block' ? '阻断' : d.level === 'confirm' ? '待确认' : '提示'}</span><div class="diff-main"><div class="diff-title">${App.esc(d.category)} · ${App.esc(d.title)}</div><div class="diff-desc">${App.esc(d.desc)}</div><div class="diff-suggest">建议：${App.esc(d.suggestion)}</div></div><div class="diff-actions">${done ? '<span class="badge badge-green">已处理</span>' : `<button class="btn btn-xs btn-primary" data-action="resolveBasicDiff" data-id="${d.id}">${d.level === 'block' ? '处理' : '接受'}</button>`}</div></div>`; }).join('')}</div></div></div></div>
+      <div class="grid grid-2 mb-16"><div class="card"><div class="card-head"><div><div class="card-title" style="font-size: calc(13px * 1.3)">学生名单预览</div></div></div>${UI.table({ columns: [ { key: 'no', label: '学号', render: (r) => `<span class="code">${r.no}</span>` }, { key: 'name', label: '姓名', render: (r) => r.conf < 0.8 ? `<input class="cell-input" value="${App.esc(r.name)}" onchange="App.editBasicCell('${r.no}','name',this.value)" />` : App.esc(r.name) }, { key: 'className', label: '班级' }, { key: 'selection', label: '选科' } ], rows: BM.STUDENT_ROWS })}</div><div class="card"><div class="card-head"><div><div class="card-title" style="font-size: calc(13px * 1.3)">差异清单</div></div></div><div class="card-body" style="max-height:320px;overflow:auto"><div class="diff-list">${BM.DIFFS.map((d) => { const done = !!accepted[d.id]; return `<div class="diff-item ${done ? 'done' : ''}"><span class="diff-level ${d.level}">${d.level === 'block' ? '阻断' : d.level === 'confirm' ? '待确认' : '提示'}</span><div class="diff-main"><div class="diff-title">${App.esc(d.category)} · ${App.esc(d.title)}</div><div class="diff-desc">${App.esc(d.desc)}</div><div class="diff-suggest">建议：${App.esc(d.suggestion)}</div></div><div class="diff-actions">${done ? '<span class="badge badge-green">已处理</span>' : `<button class="btn btn-xs btn-primary" data-action="resolveBasicDiff" data-id="${d.id}">${d.level === 'block' ? '处理' : '接受'}</button>`}</div></div>`; }).join('')}</div></div></div></div>
       <div class="flex items-center justify-between"><div class="small">${left ? `还有 ${left} 项阻断未处理` : '可以更新当前编辑稿'}</div><div class="flex gap-8"><button class="btn" data-action="resetBasicImport">取消</button><button class="btn btn-primary" data-action="applyBasicImport" ${left ? 'disabled' : ''}>更新当前编辑稿</button></div></div>
     </div></div>`;
   }
@@ -546,7 +546,7 @@
       : `已更新并覆盖当前版本 <b>${r.id} · ${App.esc(r.name || '')}</b>，覆盖后不可恢复。`;
     return `<div class="card" style="max-width:760px;margin:0 auto"><div class="card-body" style="text-align:center;padding:40px 24px">
       <div style="width:62px;height:62px;border-radius:50%;background:#ecfdf5;color:#10b981;display:grid;place-items:center;margin:0 auto 14px">${UI.icon('check')}</div>
-      <div style="font-size:20px;font-weight:700">基础数据已更新</div>
+      <div style="font-size: calc(20px * 1.3);font-weight:700">基础数据已更新</div>
       <div class="muted small mt-8">${App.esc(g ? g.name : '')} · ${msg}</div>
       <div class="flex gap-8 mt-16" style="justify-content:center"><button class="btn" data-action="backToGrade" data-id="${b.gradeId}">返回年级</button><button class="btn btn-primary" data-action="backToGrade" data-id="${b.gradeId}">查看版本</button></div>
     </div></div>`;

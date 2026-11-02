@@ -5,118 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="增值评价算法说明公开版：9 档、权重、标准分、四层汇总与完整虚构示例" />
   <title>成绩增值评价系统 · 算法说明（公开版）</title>
-  <meta name="theme-color" content="#ffffff" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230a66ff'/%3E%3Ctext x='32' y='41' font-family='Arial,Helvetica,sans-serif' font-size='22' font-weight='700' fill='white' text-anchor='middle'%3EVE%3C/text%3E%3C/svg%3E" />
-  <link rel="stylesheet" href="assets/css/tokens.css?v=20261023r11" />
-  <link rel="stylesheet" href="assets/css/app.css?v=20261023r11" />
-  <link rel="stylesheet" href="assets/css/components.css?v=20261023r11" />
-  <style>
-    body.public-doc { background: var(--surface); color: var(--text); }
-    .pub-top {
-      position: sticky; top: 0; z-index: 20;
-      display: flex; align-items: center; gap: 14px;
-      height: 64px; padding: 0 24px;
-      background: var(--surface); border-bottom: 1px solid var(--line);
-    }
-    .pub-brand { display: flex; align-items: center; gap: 10px; color: var(--text); font-weight: 650; }
-    .pub-mark {
-      width: 32px; height: 32px; border-radius: var(--radius-sm); flex: none;
-      display: grid; place-items: center;
-      background: var(--primary); color: #fff;
-      font-size: 11px; font-weight: 700; letter-spacing: .02em;
-    }
-    .pub-brand-text { display: flex; flex-direction: column; line-height: 1.2; }
-    .pub-brand-text strong { font-size: 14px; font-weight: 650; }
-    .pub-brand-text small { margin-top: 2px; font-size: 10px; font-weight: 500; color: var(--muted); }
-    .pub-tag { font-size: 12px; color: var(--muted); }
-    .pub-top a { margin-left: auto; font-size: 13px; color: var(--primary); }
-    .pub-top a:hover { color: var(--primary-hover); text-decoration: underline; }
-
-    .pub-wrap { width: min(1080px, calc(100% - 48px)); margin: 0 auto 56px; }
-    .pub-hero { padding: 56px 0 36px; border-bottom: 1px solid var(--line-soft); }
-    .pub-kicker { font-size: 12px; font-weight: 600; letter-spacing: .04em; color: var(--primary); }
-    .pub-hero h1 {
-      margin: 12px 0 14px; font-size: clamp(34px, 4.2vw, 44px); line-height: 1.18;
-      letter-spacing: -.03em; font-weight: 700; color: var(--text);
-    }
-    .pub-hero p { max-width: 860px; color: var(--muted); font-size: 15.5px; line-height: 1.85; }
-    .pub-meta { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 18px; font-size: 12px; color: var(--muted); }
-    .pub-meta span { display: inline-flex; align-items: center; gap: 6px; }
-    .pub-meta span::before { content: ""; width: 3px; height: 3px; border-radius: 50%; background: #cbd5e1; }
-
-    .pub-toc {
-      display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2px 18px;
-      margin: 24px 0 8px; padding: 16px 18px;
-      background: var(--surface-2); border: 1px solid var(--line); border-radius: var(--radius-sm);
-    }
-    .pub-toc a { display: block; padding: 6px 0; font-size: 12.5px; color: var(--text-2); }
-    .pub-toc a:hover { color: var(--primary); }
-
-    .pub-section {
-      margin: 0; padding: 44px 0;
-      background: transparent; border: 0; border-top: 1px solid var(--line-soft);
-      border-radius: 0; box-shadow: none;
-    }
-    .pub-section h2 { margin: 0 0 12px; font-size: 28px; line-height: 1.35; letter-spacing: -.02em; font-weight: 700; }
-    .pub-section h3 { margin: 24px 0 8px; font-size: 15px; font-weight: 600; }
-    .pub-section p, .pub-section li { color: var(--text-2); font-size: 13.5px; line-height: 1.95; }
-    .pub-section ul, .pub-section ol { margin: 8px 0 0 20px; padding: 0; }
-    .pub-sub { margin: 0 0 14px; color: var(--muted); font-size: 12.5px; }
-    .pub-summary { border-top: 0; }
-    .pub-summary h2 { color: var(--text); }
-
-    .pub-note {
-      margin: 12px 0; padding: 12px 14px;
-      background: var(--surface-2); border: 1px solid var(--line);
-      border-left: 2px solid var(--primary); border-radius: 0;
-      font-size: 12.5px; line-height: 1.9; color: var(--text-2);
-    }
-    .pub-warn { border-left-color: #d97706; background: var(--warning-bg); border-color: #fde68a; }
-    .pub-formula {
-      margin: 12px 0; padding: 12px 14px;
-      background: var(--surface-2); border: 1px solid var(--line); border-radius: var(--radius-sm);
-      font-family: var(--mono); font-size: 12px; line-height: 2; color: var(--text-2);
-    }
-    .pub-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 40px; }
-    .pub-grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
-    .pub-stat { padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface); }
-    .pub-stat b { display: block; font-size: 22px; line-height: 1.2; font-weight: 700; font-variant-numeric: tabular-nums; }
-    .pub-stat span { font-size: 11px; color: var(--muted); }
-
-    .pub-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
-    .pub-table th, .pub-table td { padding: 9px 10px; border-bottom: 1px solid var(--line-2); text-align: left; vertical-align: top; }
-    .pub-table th { background: var(--surface-2); color: var(--muted); font-size: 11.5px; font-weight: 600; white-space: nowrap; }
-    .pub-table td.num, .pub-table th.num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
-    .pub-table td.center, .pub-table th.center { text-align: center; }
-    .pub-table tr.total td { background: var(--surface-2); font-weight: 600; border-top: 1px solid var(--line); }
-    .pub-table-wrap { overflow: auto; border: 1px solid var(--line); border-radius: var(--radius-sm); }
-    .pub-badge { display: inline-block; padding: 1px 7px; border-radius: 4px; font-size: 11px; line-height: 1.7; }
-    .pub-green { color: #047857; background: var(--success-bg); }
-    .pub-red { color: var(--danger); background: var(--danger-bg); }
-    .pub-gray { color: var(--text-2); background: var(--surface-3); }
-    .pub-blue { color: #1d4ed8; background: var(--primary-light); }
-
-    .pub-faq { display: flex; flex-direction: column; gap: 8px; }
-    .pub-faq h3 { margin: 18px 0 6px; font-size: 14px; color: var(--primary); }
-    .pub-faq details { border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface); padding: 10px 12px; }
-    .pub-faq details[open] { border-color: #dbe7ff; background: var(--surface-2); }
-    .pub-faq summary { cursor: pointer; font-size: 13px; font-weight: 600; color: var(--text); list-style: none; }
-    .pub-faq summary::-webkit-details-marker { display: none; }
-    .pub-faq summary::before { content: '＋ '; color: var(--primary); font-weight: 600; }
-    .pub-faq details[open] summary::before { content: '－ '; }
-    .pub-faq details p { margin: 8px 0 0; font-size: 12.5px; line-height: 1.9; color: var(--text-2); }
-    .pub-faq details b { color: var(--text); }
-    .pub-footer { margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; line-height: 1.8; }
-
-    @media (max-width: 900px) {
-      .pub-top { height: 60px; padding: 0 16px; }
-      .pub-tag { display: none; }
-      .pub-wrap { width: calc(100% - 32px); }
-      .pub-hero { padding: 40px 0 28px; }
-      .pub-toc, .pub-grid, .pub-grid-3 { grid-template-columns: 1fr; }
-      .pub-section { padding: 32px 0; }
-      .pub-section h2 { font-size: 24px; }
-    }  </style>
+  <meta name="theme-color" content="#070d18" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230a1220'/%3E%3Ctext x='32' y='41' font-family='Arial,Helvetica,sans-serif' font-size='22' font-weight='700' fill='white' text-anchor='middle'%3EVE%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="assets/css/tokens.css?v=20261025r33" />
+  <link rel="stylesheet" href="assets/css/app.css?v=20261025r33" />
+  <link rel="stylesheet" href="assets/css/components.css?v=20261025r33" />
+  <link rel="stylesheet" href="assets/css/doc.css?v=20261025r33" />
 </head>
 <body class="public-doc">
   <header class="pub-top">

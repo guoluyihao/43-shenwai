@@ -96,7 +96,7 @@
     const isAdmin = App.canEdit();
     const school = App.school();
     const cur = (location.hash || '').replace(/^#/, '');
-    const home = isAdmin ? '/basic' : '/exams';
+    const home = isAdmin ? '/basic' : '/evaluations';
     const nav = (href, icon, label, exact) => {
       const isActive = exact ? cur === href : cur === href || cur.indexOf(href + '/') === 0 || (href === '/exams' && cur === '/import');
       return `<a class="nav-link ${isActive ? 'active' : ''}" href="#${href}"><span class="nav-icon">${UI.icon(icon)}</span><span>${label}</span></a>`;
@@ -107,7 +107,7 @@
         <div class="topbar-left">
           <a class="brand" href="#${home}" aria-label="成绩增值评价系统首页">
             <span class="brand-mark">VE</span>
-            <span class="brand-text"><span class="brand-name">成绩增值评价系统</span></span>
+            <span class="brand-text"><span class="brand-name">成绩增值评价系统</span><span class="brand-sub">DATA ANALYSIS REPORT</span></span>
           </a>
           <div class="topbar-divider"></div>
           <span class="badge">${isAdmin ? '全部学校' : App.esc(school.name)}</span>
@@ -131,7 +131,7 @@
             ${nav('/algorithm', 'book', '算法说明', false)}
           </div>
           <div class="sidebar-foot">
-            <span class="tag">v3.1</span>
+            <span class="tag">v3.3</span>
             <p>评价用于改进，不用于简单问责。</p>
             <small>高中园 · 四校联考</small>
           </div>

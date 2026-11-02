@@ -436,7 +436,7 @@
       </div>
       <div class="card"><div class="card-body" style="padding:40px;text-align:center">
         <div class="empty-icon">◌</div>
-        <div style="font-size:18px;font-weight:700">成绩数据已入库</div>
+        <div style="font-size: calc(18px * 1.3);font-weight:700">成绩数据已入库</div>
         <div class="muted small mt-8">高二期末、高三两场成绩已导入；可在考试详情查看成绩与导入记录。</div>
         <div class="mt-16"><button class="btn" data-action="backExams">返回考试列表</button></div>
       </div></div>
@@ -459,7 +459,7 @@
             <div class="upload-title">拖拽成绩单到这里，或选择文件</div>
             <div class="upload-desc">只支持成绩单；Excel / CSV；可一次选择多所学校文件；不需要模板</div>
           </div>
-          <div class="flex items-center justify-between mt-16 mb-8"><div class="card-title" style="font-size:13px">导入文件</div><span class="tiny weak">同一考试同一时间只允许一个导入任务</span></div>
+          <div class="flex items-center justify-between mt-16 mb-8"><div class="card-title" style="font-size: calc(13px * 1.3)">导入文件</div><span class="tiny weak">同一考试同一时间只允许一个导入任务</span></div>
           <div class="file-grid">
             ${IM.FILES.map((f) => `<div class="file-card ${w.fileIds.includes(f.id) ? 'active' : ''}" data-action="toggleImportFile" data-id="${f.id}">
               <div class="file-icon ${f.type === 'CSV' ? 'csv' : ''}">${f.type === 'CSV' ? 'CSV' : 'XLS'}</div>
@@ -528,8 +528,8 @@
       <div class="card-head"><div><div class="card-title"><span class="dot"></span>第三步：核对解析结果</div><div class="card-sub">黄色单元格为低置信度，需要人工确认</div></div><span class="badge badge-amber">3 个低置信度字段</span></div>
       <div class="card-body">
         <div class="split">
-          <div><div class="card-title mb-8" style="font-size:13px">原文件预览</div><div class="doc-preview"><div class="doc-tabs"><span class="doc-tab active">博雅高中</span><span class="doc-tab">弘知高中</span></div><table class="doc-sheet">${IM.DOC_PREVIEW.map((row, i) => i === 0 ? `<tr><th colspan="11" style="text-align:left;background:#dbeafe">${row[0]}</th></tr>` : `<tr>${row.map((c) => i === 1 ? `<th>${c}</th>` : `<td>${c}</td>`).join('')}</tr>`).join('')}</table></div></div>
-          <div><div class="card-title mb-8" style="font-size:13px">结构化成绩</div><div class="table-wrap" style="max-height:460px"><table class="table table-compact"><thead><tr>${IM.HEADERS.map((h) => `<th>${h}</th>`).join('')}</tr></thead><tbody>${IM.ROWS.map((row) => `<tr>${row.cells.map((c, j) => { const low = c.conf < 0.8; return `<td class="${low ? 'conf-low' : c.conf < 0.9 ? 'conf-mid' : ''}">${low ? `<input class="cell-input" value="${App.esc(c.v)}" onchange="App.editImportCell('${row.id}',${j},this.value)" />` : App.esc(c.v)}</td>`; }).join('')}</tr>`).join('')}</tbody></table></div>
+          <div><div class="card-title mb-8" style="font-size: calc(13px * 1.3)">原文件预览</div><div class="doc-preview"><div class="doc-tabs"><span class="doc-tab active">博雅高中</span><span class="doc-tab">弘知高中</span></div><table class="doc-sheet">${IM.DOC_PREVIEW.map((row, i) => i === 0 ? `<tr><th colspan="11" style="text-align:left;background:#dbeafe">${row[0]}</th></tr>` : `<tr>${row.map((c) => i === 1 ? `<th>${c}</th>` : `<td>${c}</td>`).join('')}</tr>`).join('')}</table></div></div>
+          <div><div class="card-title mb-8" style="font-size: calc(13px * 1.3)">结构化成绩</div><div class="table-wrap" style="max-height:460px"><table class="table table-compact"><thead><tr>${IM.HEADERS.map((h) => `<th>${h}</th>`).join('')}</tr></thead><tbody>${IM.ROWS.map((row) => `<tr>${row.cells.map((c, j) => { const low = c.conf < 0.8; return `<td class="${low ? 'conf-low' : c.conf < 0.9 ? 'conf-mid' : ''}">${low ? `<input class="cell-input" value="${App.esc(c.v)}" onchange="App.editImportCell('${row.id}',${j},this.value)" />` : App.esc(c.v)}</td>`; }).join('')}</tr>`).join('')}</tbody></table></div>
             <div class="flex justify-between mt-12"><span class="tiny weak">原文定位：第 1 个工作表 · 第 3-10 行</span><div class="flex gap-8"><button class="btn" data-action="importBack">返回上传</button><button class="btn btn-primary" data-action="importToDiff">下一步：匹配与差异 →</button></div></div>
           </div>
         </div>
@@ -630,7 +630,7 @@
     const schools = [...new Set(w.fileIds.map((id) => IM.FILES.find((f) => f.id === id)).filter(Boolean).map((f) => f.schoolName))];
     return `<div class="card" style="max-width:860px;margin:0 auto"><div class="card-body" style="text-align:center;padding:40px 24px">
       <div style="width:62px;height:62px;border-radius:50%;background:#ecfdf5;color:#10b981;display:grid;place-items:center;margin:0 auto 14px">${UI.icon('check')}</div>
-      <div style="font-size:20px;font-weight:700">导入完成</div>
+      <div style="font-size: calc(20px * 1.3);font-weight:700">导入完成</div>
       <div class="muted small mt-8">成绩已入库；未发布前可按批次覆盖，入库后不做统计。</div>
       <div class="card mt-16" style="text-align:left"><div class="card-body">${UI.kv([
         ['涉及学校', schools.join('、')],

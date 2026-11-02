@@ -1,0 +1,141 @@
+/* ============================================================
+   A4 分页版式（自建分页：一页一纸，页脚真实页码）
+   字号只有三层：20 / 14 / 11
+   ============================================================ */
+
+:root {
+  --fs-1: 20px;   /* 标题层：章标题、关键数字 */
+  --fs-2: 14px;   /* 正文层：正文、卡片标题、表格 */
+  --fs-3: 11px;   /* 辅助层：注释、图注、表头、标签、页脚 */
+  --page-w: 210mm;
+  --page-h: 297mm;
+  --pad-t: 14mm;
+  --pad-r: 12mm;
+  --pad-b: 15mm;
+  --pad-l: 12mm;
+  --body-h: 268mm; /* 297 - 14 - 15 */
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #eef1f5;
+}
+
+body {
+  font-size: var(--fs-2);
+  color: #1f2937;
+  -webkit-font-smoothing: antialiased;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+/* 纸张 */
+.pg {
+  position: relative;
+  box-sizing: border-box;
+  width: var(--page-w);
+  height: var(--page-h);
+  padding: var(--pad-t) var(--pad-r) var(--pad-b) var(--pad-l);
+  margin: 0 auto 24px;
+  background: #fff;
+  box-shadow: 0 10px 32px rgba(15, 23, 42, .14);
+  overflow: hidden;
+}
+.pg-body {
+  height: var(--body-h);
+  overflow: hidden;
+}
+.pg-foot {
+  position: absolute;
+  left: var(--pad-l);
+  right: var(--pad-r);
+  bottom: 6mm;
+  text-align: center;
+  font-size: var(--fs-3);
+  color: #64748b;
+  letter-spacing: .02em;
+}
+.pages { padding: 28px 0 48px; }
+
+/* 报告本体：宽度与版心一致 */
+.pg .an-page { width: auto !important; max-width: none !important; margin: 0 !important; padding: 0 !important; }
+.pg .an-scroll, .pg .an-scroll-lg, .pg .an-scroll-xl { max-height: none !important; overflow: visible !important; }
+.pg .table-wrap, .pg .an-master-wrap, .pg .an-tag-wrap { overflow: visible !important; }
+
+/* ---------------- 三层字号 ---------------- */
+.pg-body { font-size: var(--fs-2); line-height: 1.65; }
+.an-chapter-body { font-size: var(--fs-2); line-height: 1.7; }
+.an-chapter-copy h2 { font-size: var(--fs-1); line-height: 1.25; }
+.an-kpi > b { font-size: var(--fs-1); line-height: 1.2; }
+.an-cover-copy h1 { font-size: 26px; line-height: 1.2; } /* 仅封面 */
+
+.pg .table { font-size: 12px; line-height: 1.45; }
+.pg .table-wide { min-width: 0 !important; }
+.pg .fit-table { font-size: 10px; width: 100%; table-layout: fixed; }
+.pg .fit-table th, .pg .fit-table td { white-space: normal; word-break: break-word; overflow-wrap: anywhere; }
+.pg .an-print-note { display: block; font-size: var(--fs-3); color: #555; border: 1px dashed #bbb; padding: 6px 8px; margin-top: 6px; }
+.pg .table th { font-size: 11px; font-weight: 600; }
+.an-card > h4 { font-size: var(--fs-2); font-weight: 700; }
+.an-block h4, .an-actions h4 { font-size: var(--fs-2); }
+
+/* 辅助层：统一 11px */
+.an-note, .an-print-note, .an-boundary, .an-chapter-kicker, .an-chapter-tag,
+.an-cover-meta, .an-cover-stamp span, .an-kicker, .an-kpi > span, .an-kpi > em,
+.an-interp-col h4, .an-interp-col li, .an-ov-legend, .an-stack-legend,
+.an-mig-legend, .an-tag-legend, .an-dl dt, .an-action > span, .an-bar-label,
+.an-bar-val, .an-ov-label, .an-ov-nums, .an-ov-delta, .an-stack-label,
+.an-stack-val, .an-flow-card > span, .an-flow-card > em {
+  font-size: var(--fs-3);
+}
+.an-dl dd, .an-cover-copy p, .an-cover-meta b { font-size: var(--fs-2); }
+.an-action b, .an-action p { font-size: var(--fs-2); }
+.an-action p { color: #4b5563; }
+.an-big-number, .an-summary-line { font-size: var(--fs-1); }
+.an-target-line { font-size: var(--fs-2); }
+
+/* ---------------- 结构 ---------------- */
+.pg .an-chapter {
+  padding: 8px 0 4px;
+  margin: 0;
+  border: 0;
+  border-top: 1px solid #e5eaf2;
+  border-radius: 0;
+  box-shadow: none;
+}
+.pg .an-chapter:first-of-type { border-top: 0; padding-top: 0; }
+.pg .an-chapter-head { padding-bottom: 8px; margin-bottom: 10px; }
+.pg .an-card { padding: 9px 11px; }
+.pg .an-kpi { padding: 8px 10px 9px; }
+.pg .an-kpis { gap: 8px; grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
+.pg .an-grid-2 { gap: 10px; grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+.pg .an-interp { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+.pg .an-flows { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+.pg .table th, .pg .table td { padding: 2px 5px; }
+.pg .an-master-table, .pg .an-tag-table { font-size: 10px; }
+
+/* 分页时被拆开的卡片：续页标题 */
+.card-cont > h4::after { content: '（续）'; font-weight: 500; color: #64748b; }
+/* 超高块降级为纵向排列 */
+.stacked { display: block !important; }
+.stacked > * { margin-bottom: 8px; }
+
+@media print {
+  @page { size: A4; margin: 0; }
+  html, body { background: #fff !important; }
+  .pages { padding: 0 !important; }
+  .pg {
+    margin: 0 !important;
+    box-shadow: none !important;
+    break-after: page;
+    break-inside: avoid;
+  }
+  .pg:last-child { break-after: auto; }
+}
+
+
+
+
+
+
+

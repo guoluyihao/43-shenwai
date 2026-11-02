@@ -135,7 +135,11 @@
     }
     if (parts && parts[2] === 'process') return evalProcess(parts[1]);
     if (parts && parts[2] === 'results') return evalResults(parts[1]);
-    if (parts && parts[2] === 'reports') return App.reportPages ? App.reportPages(parts) : `<div class="page">${UI.empty('报告页未加载')}</div>`;
+    if (parts && parts[2] === 'reports') {
+      const id = parts[1] || '';
+      return `<div class="page"><div class="page-head"><div><div class="breadcrumb"><span>管理</span><span class="sep">/</span><span>评价任务</span><span class="sep">/</span><span>旧报告</span></div><h1 class="page-title">旧报告入口已关闭</h1></div><div class="page-actions"><a class="btn btn-primary" href="#/evaluations/${id}/analysis">前往分析报告</a></div></div><div class="card"><div class="card-body">旧报告不再作为分析入口，请使用“分析报告”。</div></div></div>`;
+    }
+    if (parts && parts[2] === 'analysis') return App.analysisPages ? App.analysisPages(parts) : `<div class="page">${UI.empty('分析报告页未加载')}</div>`;
     return evalList();
   };
 
@@ -156,7 +160,7 @@
             { key: 'status', label: '状态', render: (r) => UI.badge(r.status, App.taskStatusType(r.status)) },
             { key: 'updatedAt', label: '更新时间', render: (r) => `<span class="small muted">${App.esc(r.updatedAt)}</span>` },
             { key: 'ops', label: '操作', render: (r) => {
-              if (r.status === '已完成') return `<div class="flex gap-6"><button class="btn btn-xs btn-primary" data-action="viewTaskResults" data-id="${r.id}">查看结果</button><button class="btn btn-xs" data-action="viewTaskReports" data-id="${r.id}">查看报告</button></div>`;
+              if (r.status === '已完成') return `<div class="flex gap-6"><button class="btn btn-xs btn-primary" data-action="viewTaskResults" data-id="${r.id}">查看结果</button><button class="btn btn-xs" data-action="viewTaskAnalysis" data-id="${r.id}">分析报告</button></div>`;
               if (r.status === '匹配待确认') return `<button class="btn btn-xs" data-action="continueTask" data-id="${r.id}">继续确认</button>`;
               return `<button class="btn btn-xs" data-action="editTask" data-id="${r.id}">继续配置</button>`;
             } }
@@ -215,7 +219,8 @@
     App.navigate('/evaluations/new/config');
   };
   App.actions.viewTaskResults = function (el) { App.state.selectedTaskId = el.dataset.id; App.state.resultAlgorithm = App.task(el.dataset.id).algorithm || 'standard'; App.navigate('/evaluations/' + el.dataset.id + '/results'); };
-  App.actions.viewTaskReports = function (el) { App.state.selectedTaskId = el.dataset.id; App.navigate('/evaluations/' + el.dataset.id + '/reports'); };
+  App.actions.viewTaskReports = function () { UI.toast('旧报告入口已关闭，请使用“分析报告”', 'error'); };
+  App.actions.viewTaskAnalysis = function (el) { App.state.selectedTaskId = el.dataset.id; App.navigate('/evaluations/' + el.dataset.id + '/analysis'); };
 
   function stepper(step) {
     const items = ['配置', '匹配', '算法', '结果'];
@@ -1677,6 +1682,47 @@
     }
   };
 
+  const resultPct = (v) => (v == null || isNaN(v)) ? '—' : Math.round(v * 100) + '%';
+
+  function resultSummary(r, isAdmin, ownSample, ownExcluded) {
+    let totals = r.totals;
+    if (!isAdmin) totals = totals.filter((x) => x.schoolId === App.state.schoolId);
+    const n = totals.length;
+    const progress = totals.filter((x) => x.status === '进步').length;
+    const keep = totals.filter((x) => x.status === '保持').length;
+    const decline = totals.filter((x) => x.status === '退步').length;
+    const ratio = (v) => n ? v / n : 0;
+    const avgLevel = n ? totals.reduce((s, x) => s + (x.level || 0), 0) / n : 0;
+    const avgText = n ? (avgLevel > 0 ? '+' : '') + avgLevel.toFixed(2) : '—';
+    let schools = (r.schoolEval['总分'] || []).slice();
+    if (!isAdmin) schools = schools.filter((s) => s.schoolId === App.state.schoolId);
+    schools.sort((a, b) => b.rate - a.rate);
+    const top = schools[0], low = schools[schools.length - 1];
+    const schoolText = (isAdmin && schools.length > 1 && top && low)
+      ? `${schools.length} 校中 <b>${App.esc(top.schoolName)}</b> 相对进步率最高（${fmt2(top.rate)}），<b>${App.esc(low.schoolName)}</b> 最低（${fmt2(low.rate)}）；`
+      : '';
+    const finding = `${schoolText}参评 ${n} 人中 <b>${resultPct(ratio(progress))}</b> 进步、${resultPct(ratio(keep))} 保持、<b>${resultPct(ratio(decline))}</b> 退步，平均级差 <span class="accent">${avgText}</span> 档。`;
+    return `<section class="report-summary" aria-label="结果摘要">
+      <div class="summary-head">
+        <span class="summary-kicker"><b>摘要</b> / EXECUTIVE SUMMARY</span>
+        <span class="summary-title">${isAdmin ? '多校联考口径' : App.schoolName(App.state.schoolId)} · 结果快照</span>
+      </div>
+      <div class="summary-grid">
+        <div class="summary-figure"><span>参评样本</span><b>${ownSample != null ? ownSample : n}</b><em>人</em><small>剔除 ${ownExcluded != null ? ownExcluded : (r.quality.excluded || 0)} 人 · 部分缺考 ${r.quality.partialAbsentExcluded || 0} 人</small></div>
+        <div class="summary-figure"><span>进步面</span><b>${resultPct(ratio(progress))}</b><small>${progress} 人较入口位置上升</small></div>
+        <div class="summary-figure"><span>退步面</span><b class="bad">${resultPct(ratio(decline))}</b><small>${decline} 人较入口位置下降</small></div>
+        <div class="summary-figure"><span>平均级差</span><b>${avgText}</b><em>档</em><small>保持 ${keep} 人（${resultPct(ratio(keep))}）</small></div>
+      </div>
+      <div class="summary-status">
+        <div class="summary-finding">${finding}</div>
+        <div class="summary-side">
+          <div class="r-statusbar"><span class="s-progress" style="width:${(ratio(progress) * 100).toFixed(1)}%"></span><span class="s-keep" style="width:${(ratio(keep) * 100).toFixed(1)}%"></span><span class="s-decline" style="width:${(ratio(decline) * 100).toFixed(1)}%"></span></div>
+          <div class="r-status-legend"><span><i class="s-progress"></i>进步 ${progress}</span><span><i class="s-keep"></i>保持 ${keep}</span><span><i class="s-decline"></i>退步 ${decline}</span></div>
+        </div>
+      </div>
+    </section>`;
+  }
+
   function evalResults(taskId) {
     const task = App.task(taskId || 'T1');
     const r = App.result(task.id);
@@ -1688,19 +1734,28 @@
     const ownExcluded = Math.max(0, ownTotal - ownSample);
     return `<div class="page">
       <div class="page-head">
-        <div><div class="breadcrumb"><span>管理</span><span class="sep">/</span><span>评价任务</span><span class="sep">/</span><span>结果</span></div><h1 class="page-title">${App.esc(task.name)}</h1><div class="page-desc">${task.schools.map((s) => App.schoolName(s)).join('、')} · 联考统一计算 · 只呈现计算结果</div></div>
-        <div class="page-actions"><button class="btn" data-action="backEvaluations">返回任务列表</button><a class="btn" href="#/evaluations/${task.id}/reports">查看报告</a><button class="btn" data-action="openProcess" data-id="${task.id}">计算过程</button><button class="btn" data-action="exportResults">${UI.icon('download')}导出当前结果</button></div>
+        <div><div class="breadcrumb"><span>管理</span><span class="sep">/</span><span>评价任务</span><span class="sep">/</span><span>结果</span></div>
+          <div class="report-eyebrow">结果报告 <span>/ RESULTS REPORT</span></div>
+          <h1 class="page-title">${App.esc(task.name)}</h1>
+          <div class="page-desc">${task.schools.map((s) => App.schoolName(s)).join('、')} · 联考统一计算 · 只呈现计算结果</div>
+          <div class="report-byline">
+            <span>数据口径 <b>必考原始分 / 选考赋分</b></span>
+            <span>算法 <b>${algo === 'grade' ? '等级差法' : '标准分法'} · ${r.gradeCount || 9} 档</b></span>
+            <span>结果版本 <b>${App.esc(task.resultVersion || '—')}</b></span>
+            <span>更新 <b>${App.esc(task.updatedAt || '—')}</b></span>
+          </div>
+        </div>
+        <div class="page-actions"><button class="btn" data-action="backEvaluations">返回任务列表</button><button class="btn" data-action="openProcess" data-id="${task.id}">计算过程</button><button class="btn" data-action="exportResults">${UI.icon('download')}导出当前结果</button></div>
       </div>
-      <div class="card mb-16"><div class="card-body flex gap-8 wrap items-center">
-        <span class="badge badge-blue">算法：${algo === 'grade' ? '等级差法' : '标准分法'}</span>
-        <span class="badge badge-purple">口径：必考原始分 / 选考赋分</span>
+      ${resultSummary(r, isAdmin, ownSample, ownExcluded)}
+      <div class="report-meta">
         <span class="badge badge-gray">样本：${ownSample} 人</span>
         <span class="badge badge-gray">剔除：${ownExcluded} 人</span>
         <span class="badge badge-gray">部分缺考：${r.excludePartialAbsent ? `整生剔除 ${r.quality.partialAbsentExcluded} 人` : '仅剔除该科'}</span>
         <span class="badge badge-gray">小样本：少于 ${r.smallSample} 人不排名</span>
         ${r.quality.fallbackSubjects.length ? `<span class="badge badge-amber">回退原始分：${r.quality.fallbackSubjects.join('、')}</span>` : ''}
         ${r.quality.missingTeacher ? '<span class="badge badge-amber">部分成绩未匹配教师，已从教师结果剔除</span>' : ''}
-      </div></div>
+      </div>
       ${UI.tabs([
         { key: 'students', label: '学生结果', active: tab === 'students' },
         { key: 'classes', label: '班级结果', active: tab === 'classes' },

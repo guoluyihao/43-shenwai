@@ -4,7 +4,8 @@
   const App = window.App;
   if (!App.state.role) { window.location.replace('index.html'); return; }
   if (!location.hash || location.hash === '#/login') {
-    location.hash = App.canEdit() ? '#/basic' : '#/exams';
+    location.hash = App.canEdit() ? '#/basic' : '#/evaluations';
   }
   App.render();
 })();
+
